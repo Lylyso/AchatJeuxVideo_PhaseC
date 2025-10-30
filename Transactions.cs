@@ -157,6 +157,8 @@ namespace TransactionsNS
 
         #endregion
 
+        //Partie Mohamed
+
         #region Méthodes principales
 
         /// <summary>

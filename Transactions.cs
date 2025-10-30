@@ -204,6 +204,9 @@ namespace TransactionsNS
 
         #region Méthodes utilitaires
 
+
+       
+
         public string[] GetPlatforme() => tPlatforme;
         public string[] GetGenre() => tGenre;
 

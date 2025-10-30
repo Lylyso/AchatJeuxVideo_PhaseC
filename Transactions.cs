@@ -218,5 +218,9 @@ namespace TransactionsNS
         }
 
         #endregion
+
+        #region Enregistrer
+
+        #endregion
     }
 }

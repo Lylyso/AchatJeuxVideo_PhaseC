@@ -343,8 +343,12 @@
             this.aideToolStripMenuItem});
             this.jeuxVideosMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.jeuxVideosMenuStrip.Name = "jeuxVideosMenuStrip";
+
+           
+
             this.jeuxVideosMenuStrip.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
             this.jeuxVideosMenuStrip.Size = new System.Drawing.Size(1288, 30);
+
             this.jeuxVideosMenuStrip.TabIndex = 27;
             this.jeuxVideosMenuStrip.Text = "menuStrip1";
             // 
@@ -364,6 +368,7 @@
             this.enregistrerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
             this.enregistrerToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.enregistrerToolStripMenuItem.Text = "&Enregistrer";
+            this.enregistrerToolStripMenuItem.Click += new System.EventHandler(this.enregistrerButton_Click);
             // 
             // quitterToolStripMenuItem
             // 

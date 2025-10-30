@@ -25,7 +25,7 @@ namespace AchatJeuxVideo
         #region Déclaration
 
         Transactions oTrans;
-        Types oTypes;
+        
 
         #endregion
 
@@ -50,17 +50,20 @@ namespace AchatJeuxVideo
                 g.InitMessagesErreurs();
 
                 oTrans = new Transactions();
-                oTypes = new Types();
 
                 platformeComboBox.Items.AddRange(oTrans.GetPlatforme());
                 genreComboBox.Items.AddRange(oTrans.GetGenre());
 
                 platformeComboBox.SelectedIndex = 0;
                 genreComboBox.SelectedIndex = 0;
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                MessageBox.Show("Erreur de plage : " + ex.Message);
+
+                // Ajoute les événements pour sélectionner le texte automatiquement
+                nomMaskedTextBox.Enter += MaskedTextBox_Enter;
+                prenomMaskedTextBox.Enter += MaskedTextBox_Enter;
+                adresseMaskedTextBox.Enter += MaskedTextBox_Enter;
+                codePostalMaskedTextBox.Enter += MaskedTextBox_Enter;
+                telephoneMaskedTextBox.Enter += MaskedTextBox_Enter;
+                nomJeuMaskedTextBox.Enter += MaskedTextBox_Enter;
             }
             catch (Exception ex)
             {

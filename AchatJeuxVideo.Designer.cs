@@ -314,7 +314,7 @@
             this.achatsLabel.Font = new System.Drawing.Font("Cooper Black", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.achatsLabel.Location = new System.Drawing.Point(118, 0);
             this.achatsLabel.Name = "achatsLabel";
-            this.achatsLabel.Size = new System.Drawing.Size(1133, 110);
+            this.achatsLabel.Size = new System.Drawing.Size(1321, 129);
             this.achatsLabel.TabIndex = 2;
             this.achatsLabel.Text = "Achats de Jeux Videos";
             // 
@@ -349,8 +349,7 @@
             this.aideToolStripMenuItem});
             this.jeuxVideosMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.jeuxVideosMenuStrip.Name = "jeuxVideosMenuStrip";
-            this.jeuxVideosMenuStrip.Padding = new System.Windows.Forms.Padding(10, 4, 0, 4);
-            this.jeuxVideosMenuStrip.Size = new System.Drawing.Size(1449, 37);
+            this.jeuxVideosMenuStrip.Size = new System.Drawing.Size(1449, 42);
             this.jeuxVideosMenuStrip.TabIndex = 27;
             this.jeuxVideosMenuStrip.Text = "menuStrip1";
             // 
@@ -360,7 +359,7 @@
             this.enregistrerToolStripMenuItem,
             this.quitterToolStripMenuItem});
             this.fichierToolStripMenuItem.Name = "fichierToolStripMenuItem";
-            this.fichierToolStripMenuItem.Size = new System.Drawing.Size(78, 29);
+            this.fichierToolStripMenuItem.Size = new System.Drawing.Size(91, 38);
             this.fichierToolStripMenuItem.Text = "&Fichier";
             // 
             // enregistrerToolStripMenuItem
@@ -368,15 +367,16 @@
             this.enregistrerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("enregistrerToolStripMenuItem.Image")));
             this.enregistrerToolStripMenuItem.Name = "enregistrerToolStripMenuItem";
             this.enregistrerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
-            this.enregistrerToolStripMenuItem.Size = new System.Drawing.Size(277, 34);
+            this.enregistrerToolStripMenuItem.Size = new System.Drawing.Size(321, 40);
             this.enregistrerToolStripMenuItem.Text = "&Enregistrer";
+            this.enregistrerToolStripMenuItem.Click += new System.EventHandler(this.enregistrerButton_Click);
             // 
             // quitterToolStripMenuItem
             // 
             this.quitterToolStripMenuItem.Name = "quitterToolStripMenuItem";
             this.quitterToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.Q)));
-            this.quitterToolStripMenuItem.Size = new System.Drawing.Size(277, 34);
+            this.quitterToolStripMenuItem.Size = new System.Drawing.Size(321, 40);
             this.quitterToolStripMenuItem.Text = "&Quitter";
             // 
             // aideToolStripMenuItem
@@ -384,14 +384,14 @@
             this.aideToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aproposDeToolStripMenuItem});
             this.aideToolStripMenuItem.Name = "aideToolStripMenuItem";
-            this.aideToolStripMenuItem.Size = new System.Drawing.Size(64, 29);
+            this.aideToolStripMenuItem.Size = new System.Drawing.Size(73, 38);
             this.aideToolStripMenuItem.Text = "&Aide";
             // 
             // aproposDeToolStripMenuItem
             // 
             this.aproposDeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aproposDeToolStripMenuItem.Image")));
             this.aproposDeToolStripMenuItem.Name = "aproposDeToolStripMenuItem";
-            this.aproposDeToolStripMenuItem.Size = new System.Drawing.Size(226, 34);
+            this.aproposDeToolStripMenuItem.Size = new System.Drawing.Size(259, 40);
             this.aproposDeToolStripMenuItem.Text = "À &propos de...";
             this.aproposDeToolStripMenuItem.Click += new System.EventHandler(this.aproposDeToolStripMenuItem_Click);
             // 
@@ -415,7 +415,6 @@
             this.enregistrerButton.TabIndex = 30;
             this.enregistrerButton.Text = "&Enregistrer";
             this.enregistrerButton.UseVisualStyleBackColor = true;
-            this.enregistrerButton.Click += new System.EventHandler(this.enregistrerButton_Click);
             // 
             // AchatJeuxVideo
             // 

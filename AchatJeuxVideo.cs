@@ -8,7 +8,7 @@
  *      
  *      But:            calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
  * 
- *      Info:           Phase A.
+ *      Info:           Phase C.
  * 
  */
 using System;
@@ -61,6 +61,7 @@ namespace AchatJeuxVideo
 
                 oTrans = new Transactions();
 
+              //Labib
                 // Remplir les ComboBox
                 platformeComboBox.Items.AddRange(new string[] { "PC", "PlayStation", "Xbox", "Switch", "Mobile" });
                 genreComboBox.Items.AddRange(new string[] { "Action", "Aventure", "RPG", "Stratégie" });
@@ -129,28 +130,32 @@ namespace AchatJeuxVideo
 
         #endregion
 
+        #region a propos de
         private void aproposDeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmAPropos frm = new FrmAPropos();
             frm.ShowDialog();
         }
 
+        #endregion
+
+        #region Enregistrer
+
         private void enregistrerButton_Click(object sender, EventArgs e)
         {
-          
             try
             {
-                
+
                 // Calcul du prix selon la plateforme et le genre
-              
+
                 decimal prix = oTrans.GetPrix(
                     platformeComboBox.SelectedIndex,
                     genreComboBox.SelectedIndex
                 );
 
-                
+
                 // 1 ere technique Par constructeur
-                
+
                 Transactions t1 = new Transactions(
                     nomMaskedTextBox.Text,
                     prenomMaskedTextBox.Text,
@@ -165,9 +170,9 @@ namespace AchatJeuxVideo
                 );
                 t1.Enregistrer();
 
-               
+
                 // technique : Par propriétés
-                
+
                 Transactions t2 = new Transactions();
                 t2.Nom = nomMaskedTextBox.Text;
                 t2.Prenom = prenomMaskedTextBox.Text;
@@ -181,9 +186,9 @@ namespace AchatJeuxVideo
                 t2.Prix = prix;
                 t2.Enregistrer();
 
-                
+
                 //3 eme technique Par méthode Enregistrer() avec paramètres
-               
+
                 Transactions t3 = new Transactions();
                 t3.Enregistrer(
                     nomMaskedTextBox.Text,
@@ -198,8 +203,8 @@ namespace AchatJeuxVideo
                     prix
                 );
 
- 
-              
+
+
             }
             catch (ArgumentException ex)
             {
@@ -209,8 +214,11 @@ namespace AchatJeuxVideo
             {
                 MessageBox.Show("Erreur inattendue : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
+
+        #endregion
+
+        #region Masked textBox
         /// <summary>
         /// Sélectionne automatiquement tout le texte quand une zone reçoit le focus.
         /// </summary>
@@ -221,6 +229,8 @@ namespace AchatJeuxVideo
                 txt.SelectAll();
             }
         }
+        #endregion
 
+        
     }
 }

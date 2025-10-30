@@ -1,38 +1,28 @@
-﻿/*
- *      Programmeur :   Lydianne , Labib , Mohamed
- *      Date :          23 Septembre 2025
- *   
- *      Solution:       AchatJeuxVideo.sln
- *      Projet:         AchatJeuxVideo.csproj
- *      Classe:         AchatJeuxVideo.cs
- *      
- *      But:            calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
- * 
- *      Info:           Phase C.
- * 
- */
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿
+/*Programmeur :   Lydianne , Labib, Mohamed
+*      Date :          30 Octobre 2025
+*   
+*      Solution:       AchatJeuxVideo.sln
+* Projet:         AchatJeuxVideo.csproj
+* Classe:         AchatJeuxVideo.cs
+*
+* But:            Calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
+* 
+*      Info:           Phase C.
+*/
 
+using System;
+using System.Windows.Forms;
 using TransactionsNS;
 using g = AchatJeuxVideo.AchatJeuxVideoGeneraleClasse;
 using ce = AchatJeuxVideo.AchatJeuxVideoGeneraleClasse.CodesErreurs;
-
-
+using TypesNS;
 
 namespace AchatJeuxVideo
 {
     public partial class AchatJeuxVideo : Form
     {
-
-        #region Declaration
+        #region Déclaration
 
         Transactions oTrans;
         
@@ -42,7 +32,7 @@ namespace AchatJeuxVideo
         #region Constructeur
 
         /// <summary>
-        /// Constructeur
+        /// Constructeur principal du formulaire
         /// </summary>
         public AchatJeuxVideo()
         {
@@ -61,10 +51,8 @@ namespace AchatJeuxVideo
 
                 oTrans = new Transactions();
 
-              //Labib
-                // Remplir les ComboBox
-                platformeComboBox.Items.AddRange(new string[] { "PC", "PlayStation", "Xbox", "Switch", "Mobile" });
-                genreComboBox.Items.AddRange(new string[] { "Action", "Aventure", "RPG", "Stratégie" });
+                platformeComboBox.Items.AddRange(oTrans.GetPlatforme());
+                genreComboBox.Items.AddRange(oTrans.GetGenre());
 
                 platformeComboBox.SelectedIndex = 0;
                 genreComboBox.SelectedIndex = 0;
@@ -83,14 +71,17 @@ namespace AchatJeuxVideo
             }
         }
 
-        private void PlatformeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        #endregion
+
+        #region Obtenir le prix
+
+        private void platformeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
                 if (platformeComboBox.SelectedIndex != -1 && genreComboBox.SelectedIndex != -1)
                 {
-                    prixLabel.Text = oTrans.GetPrix(platformeComboBox.SelectedIndex, genreComboBox.SelectedIndex)
-                                           .ToString("C2");
+                    prixLabel.Text = oTrans.GetPrix(platformeComboBox.SelectedIndex, genreComboBox.SelectedIndex).ToString("C2");
                 }
             }
             catch (ArgumentException ex)
@@ -103,16 +94,12 @@ namespace AchatJeuxVideo
             }
         }
 
-        #endregion
-
-        #region Obtenir le prix
-
         private void PlateformeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
                 if (platformeComboBox.SelectedIndex != -1 && genreComboBox.SelectedIndex != -1)
-                    prixLabel.Text = oTrans.GetPrix(platformeComboBox.SelectedIndex, genreComboBox.SelectedIndex).ToString("C2");
+                    prixJeuxLabel.Text = oTrans.GetPrix(platformeComboBox.SelectedIndex, genreComboBox.SelectedIndex).ToString("C2");
             }
             catch (Exception)
             {
@@ -123,14 +110,16 @@ namespace AchatJeuxVideo
         #endregion
 
         #region Quitter
-        private void QuitterButton_Click(object sender, EventArgs e)
+
+        private void quitterToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             this.Close();
         }
 
         #endregion
 
-        #region a propos de
+        #region À propos
+
         private void aproposDeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmAPropos frm = new FrmAPropos();
@@ -139,98 +128,59 @@ namespace AchatJeuxVideo
 
         #endregion
 
-        #region Enregistrer
+        //mohamed
+        #region Enregistrement (test des 3 techniques)
 
-        private void enregistrerButton_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Enregistre la transaction en testant les 3 techniques de transfert
+        /// </summary>
+        private void enregistrerButton_Click_1(object sender, EventArgs e)
         {
             try
             {
+                string nomClient = nomMaskedTextBox.Text;
+                string nomJeu = nomJeuMaskedTextBox.Text;
+                string plateforme = platformeComboBox.Text;
+                string genre = genreComboBox.Text;
+                int quantite = 1;
+                DateTime date = DateTime.Now;
 
-                // Calcul du prix selon la plateforme et le genre
+                // Technique 1 : Par propriété
+                oTrans.NomClient = nomClient;
+                oTrans.NomJeu = nomJeu;
+                oTrans.Platforme = plateforme;
+                oTrans.Genre = genre;
+                oTrans.Quantite = quantite;
+                oTrans.DateTransaction = date;
+                oTrans.Prix = oTrans.GetPrix(plateforme, genre);
+                oTrans.Total = oTrans.Prix * quantite;
+                oTrans.Enregistrer();
 
-                decimal prix = oTrans.GetPrix(
-                    platformeComboBox.SelectedIndex,
-                    genreComboBox.SelectedIndex
-                );
+                // Technique 2 : Par méthode
+                oTrans.Enregistrer(nomClient, nomJeu, plateforme, genre, quantite, date);
 
-
-                // 1 ere technique Par constructeur
-
-                Transactions t1 = new Transactions(
-                    nomMaskedTextBox.Text,
-                    prenomMaskedTextBox.Text,
-                    adresseMaskedTextBox.Text,
-                    codePostalMaskedTextBox.Text,
-                    telephoneMaskedTextBox.Text,
-                    nomJeuMaskedTextBox.Text,
-                    platformeComboBox.Text,
-                    genreComboBox.Text,
-                    DateTime.Now,
-                    prix
-                );
-                t1.Enregistrer();
-
-
-                // technique : Par propriétés
-
-                Transactions t2 = new Transactions();
-                t2.Nom = nomMaskedTextBox.Text;
-                t2.Prenom = prenomMaskedTextBox.Text;
-                t2.Adresse = adresseMaskedTextBox.Text;
-                t2.CodePostal = codePostalMaskedTextBox.Text;
-                t2.Telephone = telephoneMaskedTextBox.Text;
-                t2.NomJeu = nomJeuMaskedTextBox.Text;
-                t2.Plateforme = platformeComboBox.Text;
-                t2.Genre = genreComboBox.Text;
-                t2.DateAchat = DateTime.Now;
-                t2.Prix = prix;
-                t2.Enregistrer();
-
-
-                //3 eme technique Par méthode Enregistrer() avec paramètres
-
-                Transactions t3 = new Transactions();
-                t3.Enregistrer(
-                    nomMaskedTextBox.Text,
-                    prenomMaskedTextBox.Text,
-                    adresseMaskedTextBox.Text,
-                    codePostalMaskedTextBox.Text,
-                    telephoneMaskedTextBox.Text,
-                    nomJeuMaskedTextBox.Text,
-                    platformeComboBox.Text,
-                    genreComboBox.Text,
-                    DateTime.Now,
-                    prix
-                );
-
-
-
+                // Technique 3 : Par constructeur
+                Transactions transConstructeur = new Transactions(nomClient, nomJeu, plateforme, genre, quantite, date);
             }
             catch (ArgumentException ex)
             {
-                MessageBox.Show("Erreur de paramètre : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Erreur d'argument : " + ex.Message);
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show("Erreur de format : " + ex.Message);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erreur inattendue : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Erreur inattendue : " + ex.Message);
             }
         }
 
+
         #endregion
 
-        #region Masked textBox
-        /// <summary>
-        /// Sélectionne automatiquement tout le texte quand une zone reçoit le focus.
-        /// </summary>
-        private void MaskedTextBox_Enter(object sender, EventArgs e)
-        {
-            if (sender is TextBox txt)
-            {
-                txt.SelectAll();
-            }
-        }
-        #endregion
-
-        
+      
     }
 }
+
+

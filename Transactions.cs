@@ -22,8 +22,11 @@ using System.Windows.Forms;
 namespace TransactionsNS
 {
     /// <summary>
-    /// Classe Transactions permettant de gérer les achats de jeux vidéo.
-    /// Contient les propriétés, les constructeurs et les méthodes d’enregistrement.
+    /// Classe Transactions permettant de récupérer les prix selon la plateforme et le genre.
+    /// Implémente les 3 techniques de transfert :
+    /// - Par propriétés : définir les propriétés puis appeler Enregistrer()
+    /// - Par constructeur : fournir les valeurs au constructeur
+    /// - Par méthode Enregistrer(...) : fournir les valeurs puis appeler Enregistrer() interne
     /// </summary>
     public class Transactions
     {
@@ -42,25 +45,80 @@ namespace TransactionsNS
         private decimal prixDecimal;
         #endregion
 
-        #region Propriétés publiques
-        public int ID => idInt;
+        #region Déclarations des variables
 
-        public string Nom { get => nomStr; set => nomStr = value; }
-        public string Prenom { get => prenomStr; set => prenomStr = value; }
-        public string Adresse { get => adresseStr; set => adresseStr = value; }
-        public string CodePostal { get => codePostalStr; set => codePostalStr = value; }
-        public string Telephone { get => telephoneStr; set => telephoneStr = value; }
-        public string NomJeu { get => nomJeuStr; set => nomJeuStr = value; }
-        public string Plateforme { get => plateformeStr; set => plateformeStr = value; }
-        public string Genre { get => genreStr; set => genreStr = value; }
-        public DateTime DateAchat { get => dateAchatDateTime; set => dateAchatDateTime = value; }
-        public decimal Prix { get => prixDecimal; set => prixDecimal = value; }
+        private static int compteurID = 0;
+        private int id;
+        private string nomClient;
+        private string nomJeu;
+        private string platforme;
+        private string genre;
+        private decimal prix;
+        private int quantite;
+        private decimal total;
+        private DateTime dateTransaction;
+
         #endregion
 
-        #region Constructeurs
-        public Transactions()
+        #region Propriétés publiques
+
+        public int Id
         {
-            idInt = compteur++;
+            get { return id; }
+        }
+        public string NomClient
+        {
+            get { return nomClient; }
+            set { nomClient = value; }
+        }
+        public string NomJeu
+        {
+            get { return nomJeu; }
+            set { nomJeu = value; }
+        }
+        public string Platforme
+        {
+            get { return platforme; }
+            set { platforme = value; }
+        }
+        public string Genre
+        {
+            get { return genre; }
+            set { genre = value; }
+        }
+        public int Quantite
+        {
+            get { return quantite; }
+            set { quantite = value; }
+        }
+        public DateTime DateTransaction
+        {
+            get { return dateTransaction; }
+            set { dateTransaction = value; }
+        }
+        public decimal Prix
+        {
+            get { return prix; }
+            set { prix = value; }
+        }
+        public decimal Total
+        {
+            get { return total; }
+            set { total = value; }
+        }
+
+        #endregion
+
+        #region Initialisation des tableaux
+
+        private void InitPlatforme()
+        {
+            tPlatforme = new string[] { "PC", "PlayStation", "Xbox", "Switch", "Mobile" };
+        }
+
+        private void InitGenre()
+        {
+            tGenre = new string[] { "Action", "Aventure", "RPG", "Stratégie" };
         }
 
         public Transactions(string nom, string prenom, string adresse, string codePostal,
@@ -79,59 +137,85 @@ namespace TransactionsNS
             DateAchat = dateAchat;
             Prix = prix;
         }
+
         #endregion
 
-        #region Méthodes
+        #region Constructeurs
+
         /// <summary>
-        /// Méthode Enregistrer sans paramètre — 2ᵉ méthode de transfert.
-        /// Affiche les données de la transaction dans une boîte de message.
+        /// Constructeur par défaut
         /// </summary>
         public void Enregistrer()
         {
-            string info =
-
-                $"ID : {ID}\n" +
-                $"Nom : {Nom}\n" +
-                $"Prénom : {Prenom}\n" +
-                $"Adresse : {Adresse}\n" +
-                $"Code postal : {CodePostal}\n" +
-                $"Téléphone : {Telephone}\n" +
-                $"Nom du jeu : {NomJeu}\n" +
-                $"Plateforme : {Plateforme}\n" +
-                $"Genre : {Genre}\n" +
-                $"Date d'achat : {DateAchat:d}\n" +
-                $"Prix : {Prix:C2}\n";
-              
-
-            MessageBox.Show(info, "Transaction enregistrée");
+            InitPlatforme();
+            InitGenre();
+            InitPrix();
+            compteurID++;
+            id = compteurID;
         }
 
         /// <summary>
-        /// Méthode Enregistrer avec paramètres — 3ᵉ méthode de transfert.
-        /// Initialise les propriétés et appelle la version sans paramètre.
+        /// Constructeur avec paramètres
         /// </summary>
-        public void Enregistrer(string nom, string prenom, string adresse, string codePostal,
-                                string telephone, string nomJeu, string plateforme,
-                                string genre, DateTime dateAchat, decimal prix)
+        public Transactions(string nomClient, string nomJeu, string platforme, string genre, int quantite, DateTime dateTransaction)
         {
-            Nom = nom;
-            Prenom = prenom;
-            Adresse = adresse;
-            CodePostal = codePostal;
-            Telephone = telephone;
-            NomJeu = nomJeu;
-            Plateforme = plateforme;
-            Genre = genre;
-            DateAchat = dateAchat;
-            Prix = prix;
+            InitPlatforme();
+            InitGenre();
+            InitPrix();
 
-            Enregistrer(); // Appelle la version sans paramètre
+            this.NomClient = nomClient;
+            this.NomJeu = nomJeu;
+            this.Platforme = platforme;
+            this.Genre = genre;
+            this.Quantite = quantite;
+            this.DateTransaction = dateTransaction;
+            this.Prix = GetPrix(platforme, genre);
+            this.Total = this.Prix * this.Quantite;
+
+            compteurID++;
+            id = compteurID;
+
+            Enregistrer();
         }
+
         #endregion
 
-        #region Tarification
-        private string[] tPlatforme = { "PC", "PlayStation", "Xbox", "Switch", "Mobile" };
-        private string[] tGenre = { "Action", "Aventure", "RPG", "Stratégie" };
+        //Partie Mohamed
+
+        #region Méthodes principales
+
+        /// <summary>
+        /// Enregistre la transaction (console)
+        /// </summary>
+        public void Enregistrer()
+        {
+            Console.WriteLine("Transaction enregistrée :");
+            Console.WriteLine($"ID: {Id}, Client: {NomClient}, Jeu: {NomJeu}, Plateforme: {Platforme}, Genre: {Genre}, Quantité: {Quantite}, Prix Unitaire: {Prix}, Total: {Total}, Date: {DateTransaction}");
+        }
+
+        /// <summary>
+        /// Enregistre la transaction via paramètres
+        /// </summary>
+        public void Enregistrer(string nomClient, string nomJeu, string platforme, string genre, int quantite, DateTime dateTransaction)
+        {
+            this.NomClient = nomClient;
+            this.NomJeu = nomJeu;
+            this.Platforme = platforme;
+            this.Genre = genre;
+            this.Quantite = quantite;
+            this.DateTransaction = dateTransaction;
+            this.Prix = GetPrix(platforme, genre);
+            this.Total = this.Prix * this.Quantite;
+
+            Enregistrer();
+        }
+
+        #endregion
+
+        #region Méthodes utilitaires
+
+        public string[] GetPlatforme() => tPlatforme;
+        public string[] GetGenre() => tGenre;
 
         private decimal[,] tPrix = new decimal[5, 4]
         {
@@ -147,7 +231,7 @@ namespace TransactionsNS
             return tPrix[plateforme, genre];
         }
 
-        public decimal GetPrix(string plateforme, string genre)
+        public decimal GetPrix(string platforme, string genre)
         {
             int i = Array.IndexOf(tPlatforme, plateforme);
             int j = Array.IndexOf(tGenre, genre);
@@ -157,8 +241,7 @@ namespace TransactionsNS
         }
 
         #endregion
-
-
-
     }
 }
+
+

@@ -391,7 +391,7 @@
             // 
             this.aproposDeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aproposDeToolStripMenuItem.Image")));
             this.aproposDeToolStripMenuItem.Name = "aproposDeToolStripMenuItem";
-            this.aproposDeToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.aproposDeToolStripMenuItem.Size = new System.Drawing.Size(226, 34);
             this.aproposDeToolStripMenuItem.Text = "À &propos de...";
             this.aproposDeToolStripMenuItem.Click += new System.EventHandler(this.aproposDeToolStripMenuItem_Click);
             // 
@@ -415,6 +415,7 @@
             this.enregistrerButton.TabIndex = 30;
             this.enregistrerButton.Text = "&Enregistrer";
             this.enregistrerButton.UseVisualStyleBackColor = true;
+            this.enregistrerButton.Click += new System.EventHandler(this.enregistrerButton_Click);
             // 
             // AchatJeuxVideo
             // 

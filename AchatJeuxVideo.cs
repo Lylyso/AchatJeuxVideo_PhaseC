@@ -25,7 +25,7 @@ using TransactionsNS;
 using g = AchatJeuxVideo.AchatJeuxVideoGeneraleClasse;
 using ce = AchatJeuxVideo.AchatJeuxVideoGeneraleClasse.CodesErreurs;
 
-using TypesNS;
+
 
 namespace AchatJeuxVideo
 {
@@ -35,7 +35,7 @@ namespace AchatJeuxVideo
         #region Declaration
 
         Transactions oTrans;
-        Types oTypes;
+        
 
         #endregion
 
@@ -60,17 +60,21 @@ namespace AchatJeuxVideo
                 g.InitMessagesErreurs();
 
                 oTrans = new Transactions();
-                oTypes = new Types();
 
-                platformeComboBox.Items.AddRange(oTypes.GetTypes(Types.CodeTypes.Plateforme));
-                genreComboBox.Items.AddRange(oTypes.GetTypes(Types.CodeTypes.Genre));
+                // Remplir les ComboBox
+                platformeComboBox.Items.AddRange(new string[] { "PC", "PlayStation", "Xbox", "Switch", "Mobile" });
+                genreComboBox.Items.AddRange(new string[] { "Action", "Aventure", "RPG", "Stratégie" });
 
                 platformeComboBox.SelectedIndex = 0;
                 genreComboBox.SelectedIndex = 0;
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                MessageBox.Show("Erreur de plage : " + ex.Message);
+
+                // Ajoute les événements pour sélectionner le texte automatiquement
+                nomMaskedTextBox.Enter += MaskedTextBox_Enter;
+                prenomMaskedTextBox.Enter += MaskedTextBox_Enter;
+                adresseMaskedTextBox.Enter += MaskedTextBox_Enter;
+                codePostalMaskedTextBox.Enter += MaskedTextBox_Enter;
+                telephoneMaskedTextBox.Enter += MaskedTextBox_Enter;
+                nomJeuMaskedTextBox.Enter += MaskedTextBox_Enter;
             }
             catch (Exception ex)
             {
@@ -130,5 +134,93 @@ namespace AchatJeuxVideo
             FrmAPropos frm = new FrmAPropos();
             frm.ShowDialog();
         }
+
+        private void enregistrerButton_Click(object sender, EventArgs e)
+        {
+          
+            try
+            {
+                
+                // Calcul du prix selon la plateforme et le genre
+              
+                decimal prix = oTrans.GetPrix(
+                    platformeComboBox.SelectedIndex,
+                    genreComboBox.SelectedIndex
+                );
+
+                
+                // 1 ere technique Par constructeur
+                
+                Transactions t1 = new Transactions(
+                    nomMaskedTextBox.Text,
+                    prenomMaskedTextBox.Text,
+                    adresseMaskedTextBox.Text,
+                    codePostalMaskedTextBox.Text,
+                    telephoneMaskedTextBox.Text,
+                    nomJeuMaskedTextBox.Text,
+                    platformeComboBox.Text,
+                    genreComboBox.Text,
+                    DateTime.Now,
+                    prix
+                );
+                t1.Enregistrer();
+
+               
+                // technique : Par propriétés
+                
+                Transactions t2 = new Transactions();
+                t2.Nom = nomMaskedTextBox.Text;
+                t2.Prenom = prenomMaskedTextBox.Text;
+                t2.Adresse = adresseMaskedTextBox.Text;
+                t2.CodePostal = codePostalMaskedTextBox.Text;
+                t2.Telephone = telephoneMaskedTextBox.Text;
+                t2.NomJeu = nomJeuMaskedTextBox.Text;
+                t2.Plateforme = platformeComboBox.Text;
+                t2.Genre = genreComboBox.Text;
+                t2.DateAchat = DateTime.Now;
+                t2.Prix = prix;
+                t2.Enregistrer();
+
+                
+                //3 eme technique Par méthode Enregistrer() avec paramètres
+               
+                Transactions t3 = new Transactions();
+                t3.Enregistrer(
+                    nomMaskedTextBox.Text,
+                    prenomMaskedTextBox.Text,
+                    adresseMaskedTextBox.Text,
+                    codePostalMaskedTextBox.Text,
+                    telephoneMaskedTextBox.Text,
+                    nomJeuMaskedTextBox.Text,
+                    platformeComboBox.Text,
+                    genreComboBox.Text,
+                    DateTime.Now,
+                    prix
+                );
+
+ 
+              
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show("Erreur de paramètre : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur inattendue : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+        /// <summary>
+        /// Sélectionne automatiquement tout le texte quand une zone reçoit le focus.
+        /// </summary>
+        private void MaskedTextBox_Enter(object sender, EventArgs e)
+        {
+            if (sender is TextBox txt)
+            {
+                txt.SelectAll();
+            }
+        }
+
     }
 }

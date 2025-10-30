@@ -72,7 +72,7 @@ namespace AchatJeuxVideo
 
         #region Obtenir le prix
 
-        private void platformeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void PlatformeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace AchatJeuxVideo
 
         #region Quitter
 
-        private void quitterToolStripMenuItem_Click_1(object sender, EventArgs e)
+        private void QuitterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -117,7 +117,7 @@ namespace AchatJeuxVideo
 
         #region À propos
 
-        private void aproposDeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AproposDeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmAPropos frm = new FrmAPropos();
             frm.ShowDialog();
@@ -131,7 +131,7 @@ namespace AchatJeuxVideo
         /// <summary>
         /// Enregistre la transaction en testant les 3 techniques de transfert
         /// </summary>
-        private void enregistrerButton_Click_1(object sender, EventArgs e)
+        private void EnregistrerButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -173,10 +173,18 @@ namespace AchatJeuxVideo
             }
         }
 
-
         #endregion
 
-      
+        #region Methode MaskedTextBox
+        private void MaskedTextBoxEnter(object sender, EventArgs e)
+        {
+            if (sender is MaskedTextBox mtb)
+            {
+                mtb.SelectAll();
+            }
+        }
+
+        #endregion
     }
 }
 

@@ -101,6 +101,7 @@
             this.nomJeuMaskedTextBox.Name = "nomJeuMaskedTextBox";
             this.nomJeuMaskedTextBox.Size = new System.Drawing.Size(291, 22);
             this.nomJeuMaskedTextBox.TabIndex = 33;
+            this.nomJeuMaskedTextBox.Enter += new System.EventHandler(this.MaskedTextBoxEnter);
             // 
             // nomJeuLabel
             // 
@@ -118,45 +119,50 @@
             this.telephoneMaskedTextBox.Name = "telephoneMaskedTextBox";
             this.telephoneMaskedTextBox.Size = new System.Drawing.Size(291, 22);
             this.telephoneMaskedTextBox.TabIndex = 31;
+            this.telephoneMaskedTextBox.Enter += new System.EventHandler(this.MaskedTextBoxEnter);
             // 
             // codePostalMaskedTextBox
             // 
             this.codePostalMaskedTextBox.Location = new System.Drawing.Point(159, 223);
             this.codePostalMaskedTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.codePostalMaskedTextBox.Name = "codePostalMaskedTextBox";
-            this.codePostalMaskedTextBox.Size = new System.Drawing.Size(291, 22);
+            this.codePostalMaskedTextBox.Size = new System.Drawing.Size(327, 29);
             this.codePostalMaskedTextBox.TabIndex = 30;
+            this.codePostalMaskedTextBox.Enter += new System.EventHandler(this.MaskedTextBoxEnter);
             // 
             // adresseMaskedTextBox
             // 
             this.adresseMaskedTextBox.Location = new System.Drawing.Point(159, 160);
             this.adresseMaskedTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.adresseMaskedTextBox.Name = "adresseMaskedTextBox";
-            this.adresseMaskedTextBox.Size = new System.Drawing.Size(291, 22);
+            this.adresseMaskedTextBox.Size = new System.Drawing.Size(327, 29);
             this.adresseMaskedTextBox.TabIndex = 29;
+            this.adresseMaskedTextBox.Enter += new System.EventHandler(this.MaskedTextBoxEnter);
             // 
             // prenomMaskedTextBox
             // 
             this.prenomMaskedTextBox.Location = new System.Drawing.Point(159, 96);
             this.prenomMaskedTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.prenomMaskedTextBox.Name = "prenomMaskedTextBox";
-            this.prenomMaskedTextBox.Size = new System.Drawing.Size(291, 22);
+            this.prenomMaskedTextBox.Size = new System.Drawing.Size(327, 29);
             this.prenomMaskedTextBox.TabIndex = 28;
+            this.prenomMaskedTextBox.Enter += new System.EventHandler(this.MaskedTextBoxEnter);
             // 
             // nomMaskedTextBox
             // 
             this.nomMaskedTextBox.Location = new System.Drawing.Point(159, 38);
             this.nomMaskedTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.nomMaskedTextBox.Name = "nomMaskedTextBox";
-            this.nomMaskedTextBox.Size = new System.Drawing.Size(291, 22);
+            this.nomMaskedTextBox.Size = new System.Drawing.Size(327, 29);
             this.nomMaskedTextBox.TabIndex = 27;
+            this.nomMaskedTextBox.Enter += new System.EventHandler(this.MaskedTextBoxEnter);
             // 
             // telephoneLabel
             // 
             this.telephoneLabel.AutoSize = true;
             this.telephoneLabel.Location = new System.Drawing.Point(18, 283);
             this.telephoneLabel.Name = "telephoneLabel";
-            this.telephoneLabel.Size = new System.Drawing.Size(79, 16);
+            this.telephoneLabel.Size = new System.Drawing.Size(117, 25);
             this.telephoneLabel.TabIndex = 4;
             this.telephoneLabel.Text = "Téléphone :";
             // 
@@ -165,7 +171,7 @@
             this.codePostalLabel.AutoSize = true;
             this.codePostalLabel.Location = new System.Drawing.Point(18, 229);
             this.codePostalLabel.Name = "codePostalLabel";
-            this.codePostalLabel.Size = new System.Drawing.Size(90, 16);
+            this.codePostalLabel.Size = new System.Drawing.Size(135, 25);
             this.codePostalLabel.TabIndex = 3;
             this.codePostalLabel.Text = "Code Postal : ";
             // 
@@ -174,7 +180,7 @@
             this.adresseLabel.AutoSize = true;
             this.adresseLabel.Location = new System.Drawing.Point(18, 169);
             this.adresseLabel.Name = "adresseLabel";
-            this.adresseLabel.Size = new System.Drawing.Size(64, 16);
+            this.adresseLabel.Size = new System.Drawing.Size(96, 25);
             this.adresseLabel.TabIndex = 2;
             this.adresseLabel.Text = "Adresse :";
             // 
@@ -183,7 +189,7 @@
             this.prenomLabel.AutoSize = true;
             this.prenomLabel.Location = new System.Drawing.Point(17, 102);
             this.prenomLabel.Name = "prenomLabel";
-            this.prenomLabel.Size = new System.Drawing.Size(60, 16);
+            this.prenomLabel.Size = new System.Drawing.Size(91, 25);
             this.prenomLabel.TabIndex = 1;
             this.prenomLabel.Text = "Prénom :";
             // 
@@ -192,7 +198,7 @@
             this.nomLabel.AutoSize = true;
             this.nomLabel.Location = new System.Drawing.Point(18, 44);
             this.nomLabel.Name = "nomLabel";
-            this.nomLabel.Size = new System.Drawing.Size(42, 16);
+            this.nomLabel.Size = new System.Drawing.Size(64, 25);
             this.nomLabel.TabIndex = 0;
             this.nomLabel.Text = "Nom :";
             // 
@@ -253,7 +259,7 @@
             // 
             this.dateAchatDateTimePicker.Location = new System.Drawing.Point(192, 29);
             this.dateAchatDateTimePicker.Name = "dateAchatDateTimePicker";
-            this.dateAchatDateTimePicker.Size = new System.Drawing.Size(277, 22);
+            this.dateAchatDateTimePicker.Size = new System.Drawing.Size(311, 29);
             this.dateAchatDateTimePicker.TabIndex = 11;
             // 
             // dateLabel
@@ -261,7 +267,7 @@
             this.dateLabel.AutoSize = true;
             this.dateLabel.Location = new System.Drawing.Point(19, 34);
             this.dateLabel.Name = "dateLabel";
-            this.dateLabel.Size = new System.Drawing.Size(79, 16);
+            this.dateLabel.Size = new System.Drawing.Size(120, 25);
             this.dateLabel.TabIndex = 7;
             this.dateLabel.Text = "Date Achat :";
             // 
@@ -270,7 +276,7 @@
             this.platformeLabel.AutoSize = true;
             this.platformeLabel.Location = new System.Drawing.Point(19, 82);
             this.platformeLabel.Name = "platformeLabel";
-            this.platformeLabel.Size = new System.Drawing.Size(73, 16);
+            this.platformeLabel.Size = new System.Drawing.Size(110, 25);
             this.platformeLabel.TabIndex = 8;
             this.platformeLabel.Text = "Platforme : ";
             // 
@@ -279,7 +285,7 @@
             this.genreLabel.AutoSize = true;
             this.genreLabel.Location = new System.Drawing.Point(19, 134);
             this.genreLabel.Name = "genreLabel";
-            this.genreLabel.Size = new System.Drawing.Size(50, 16);
+            this.genreLabel.Size = new System.Drawing.Size(77, 25);
             this.genreLabel.TabIndex = 9;
             this.genreLabel.Text = "Genre :";
             // 
@@ -288,7 +294,7 @@
             this.prixJeuxLabel.AutoSize = true;
             this.prixJeuxLabel.Location = new System.Drawing.Point(19, 181);
             this.prixJeuxLabel.Name = "prixJeuxLabel";
-            this.prixJeuxLabel.Size = new System.Drawing.Size(35, 16);
+            this.prixJeuxLabel.Size = new System.Drawing.Size(56, 25);
             this.prixJeuxLabel.TabIndex = 10;
             this.prixJeuxLabel.Text = "Prix :";
             // 
@@ -311,7 +317,7 @@
             this.achatsLabel.Font = new System.Drawing.Font("Cooper Black", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.achatsLabel.Location = new System.Drawing.Point(105, 0);
             this.achatsLabel.Name = "achatsLabel";
-            this.achatsLabel.Size = new System.Drawing.Size(942, 91);
+            this.achatsLabel.Size = new System.Drawing.Size(1321, 129);
             this.achatsLabel.TabIndex = 2;
             this.achatsLabel.Text = "Achats de Jeux Videos";
             // 
@@ -345,6 +351,10 @@
             this.jeuxVideosMenuStrip.Name = "jeuxVideosMenuStrip";
             this.jeuxVideosMenuStrip.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
             this.jeuxVideosMenuStrip.Size = new System.Drawing.Size(1288, 30);
+
+            this.jeuxVideosMenuStrip.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
+            this.jeuxVideosMenuStrip.Size = new System.Drawing.Size(1288, 30);
+
             this.jeuxVideosMenuStrip.TabIndex = 27;
             this.jeuxVideosMenuStrip.Text = "menuStrip1";
             // 
@@ -354,7 +364,7 @@
             this.enregistrerToolStripMenuItem,
             this.quitterToolStripMenuItem});
             this.fichierToolStripMenuItem.Name = "fichierToolStripMenuItem";
-            this.fichierToolStripMenuItem.Size = new System.Drawing.Size(66, 24);
+            this.fichierToolStripMenuItem.Size = new System.Drawing.Size(91, 34);
             this.fichierToolStripMenuItem.Text = "&Fichier";
             // 
             // enregistrerToolStripMenuItem
@@ -362,7 +372,7 @@
             this.enregistrerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("enregistrerToolStripMenuItem.Image")));
             this.enregistrerToolStripMenuItem.Name = "enregistrerToolStripMenuItem";
             this.enregistrerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
-            this.enregistrerToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
+            this.enregistrerToolStripMenuItem.Size = new System.Drawing.Size(321, 40);
             this.enregistrerToolStripMenuItem.Text = "&Enregistrer";
             // 
             // quitterToolStripMenuItem
@@ -370,25 +380,25 @@
             this.quitterToolStripMenuItem.Name = "quitterToolStripMenuItem";
             this.quitterToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.Q)));
-            this.quitterToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
+            this.quitterToolStripMenuItem.Size = new System.Drawing.Size(321, 40);
             this.quitterToolStripMenuItem.Text = "&Quitter";
-            this.quitterToolStripMenuItem.Click += new System.EventHandler(this.quitterToolStripMenuItem_Click_1);
+            this.quitterToolStripMenuItem.Click += new System.EventHandler(this.QuitterToolStripMenuItem_Click);
             // 
             // aideToolStripMenuItem
             // 
             this.aideToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aproposDeToolStripMenuItem});
             this.aideToolStripMenuItem.Name = "aideToolStripMenuItem";
-            this.aideToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
+            this.aideToolStripMenuItem.Size = new System.Drawing.Size(73, 34);
             this.aideToolStripMenuItem.Text = "&Aide";
             // 
             // aproposDeToolStripMenuItem
             // 
             this.aproposDeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aproposDeToolStripMenuItem.Image")));
             this.aproposDeToolStripMenuItem.Name = "aproposDeToolStripMenuItem";
-            this.aproposDeToolStripMenuItem.Size = new System.Drawing.Size(183, 26);
+            this.aproposDeToolStripMenuItem.Size = new System.Drawing.Size(259, 40);
             this.aproposDeToolStripMenuItem.Text = "À &propos de...";
-            this.aproposDeToolStripMenuItem.Click += new System.EventHandler(this.aproposDeToolStripMenuItem_Click);
+            this.aproposDeToolStripMenuItem.Click += new System.EventHandler(this.AproposDeToolStripMenuItem_Click);
             // 
             // quitterButton
             // 
@@ -409,7 +419,7 @@
             this.enregistrerButton.TabIndex = 30;
             this.enregistrerButton.Text = "&Enregistrer";
             this.enregistrerButton.UseVisualStyleBackColor = true;
-            this.enregistrerButton.Click += new System.EventHandler(this.enregistrerButton_Click_1);
+            this.enregistrerButton.Click += new System.EventHandler(this.EnregistrerButton_Click);
             // 
             // AchatJeuxVideo
             // 

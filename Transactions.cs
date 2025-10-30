@@ -9,7 +9,15 @@ namespace TransactionsNS
     /// <summary>
     /// Classe Transactions permettant de récupérer les prix selon la plateforme et le genre.
     /// Contient des surcharges GetPrix avec validation et gestion d'exceptions.
+    /// 
+    ///Implémente les 3 techniques de transfert:
+    ///  - Par propriétés: définir les propriétés puis appeler Enregistrer()
+    ///  - Par constructeur: fournir les valeurs au constructeur
+    ///  - Par méthode Enregistrer(...): fournir les valeurs puis appeler Enregistrer() interne
+    /// Valide Plateforme/Genre à partir de la grille de tarification (classe Transactions)
+    /// et calcule le Prix correspondant.
     /// </summary>
+    
     public class Transactions
     {
         #region Déclarations des tableaux
@@ -17,6 +25,70 @@ namespace TransactionsNS
         private string[] tPlatforme;
         private string[] tGenre;
         private decimal[,] tPrix;
+
+        #endregion
+
+        #region Déclarations des variables
+
+        private static int compteurID = 0;
+        private int id;
+        private string nomClient;
+        private string nomJeu;
+        private string platforme;
+        private string genre;
+        private decimal prix;
+        private int quantite;   
+        private decimal total;
+        private DateTime dateTransaction;
+
+        #endregion
+
+        #region Déclarations des variables public Get Set
+
+        public int Id
+        {
+            get { return id; }
+        }
+        public string NomClient
+        {
+            get { return nomClient; }
+            set { nomClient = value; }
+        }
+        public string NomJeu
+        {
+            get { return nomJeu; }
+            set { nomJeu = value; }
+        }
+        public string Platforme
+        {
+            get { return platforme; }
+            set { platforme = value; }
+        }
+        public string Genre
+        {
+            get { return genre; }
+            set { genre = value; }
+        }
+        public int Quantite
+        {
+            get { return quantite; }
+            set { quantite = value; }
+        }
+        public DateTime DateTransaction
+        {
+            get { return dateTransaction; }
+            set { dateTransaction = value; }
+        }
+        public decimal Prix
+        {
+            get { return prix; }
+            set { prix = value; }
+        }
+        public decimal Total
+        {
+            get { return total; }
+            set { total = value; }
+        }
 
         #endregion
 
@@ -53,7 +125,37 @@ namespace TransactionsNS
             InitPlatforme();
             InitGenre();
             InitPrix();
+
+            compteurID++;
+            id = compteurID;
+
         }
+        #endregion
+
+        #region  Constructeur avec paramètres
+
+        /// <summary>
+        /// constructeurs avec parametres
+        /// Initialiser toutes les variables privées en passant par les propriétés
+
+      public Transactions(string nomClient, string nomJeu, string platforme, string genre, int quantite, DateTime dateTransaction)
+      {          
+            this.NomClient = nomClient;
+            this.NomJeu = nomJeu;
+            this.Platforme = platforme;
+            this.Genre = genre;
+            this.Quantite = quantite;
+            this.DateTransaction = dateTransaction;
+            this.Prix = GetPrix(platforme, genre);
+            this.Total = this.Prix * this.Quantite;
+            compteurID++;
+            id = compteurID;
+
+            //appeler methode enregistrer ici (Mohamed)
+
+      }
+        
+
         #endregion
 
         #region Getters pour ComboBox

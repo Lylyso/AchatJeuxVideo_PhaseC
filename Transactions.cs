@@ -1,23 +1,23 @@
-﻿/*
-*  Programmeur :   Lydianne , Labib , Mohamed
-*  Date :          23 Septembre 2025
-*  
-*  Solution :      AchatJeuxVideo.sln
-*  Projet :        AchatJeuxVideo.csproj
-*  Classe :        Transactions.cs
-*  
-*  But :            Gérer les transactions d’achat de jeux vidéo.
-*                   Implémenter les trois techniques de transfert de données
-*                   entre le formulaire principal et la classe métier :
-*                     1) Par le constructeur
-*                     2) Par les propriétés
-*                     3) Par la méthode Enregistrer() avec paramètres
-*                   
-*  Info :           Phase C — PROG1236
+﻿
+
+/*Programmeur :   Lydianne , Labib, Mohamed
+*      Date :          30 Octobre 2025
+*   
+*      Solution:       AchatJeuxVideo.sln
+* Projet:         AchatJeuxVideo.csproj
+* Classe:         AchatJeuxVideo.cs
+*
+* But:            Calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
+* 
+*      Info:           Phase C.
 */
 
 using System;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace TransactionsNS
 {
@@ -30,19 +30,12 @@ namespace TransactionsNS
     /// </summary>
     public class Transactions
     {
-        #region Champs privés
-        private static int compteur = 1; // ID auto incrémenté
-        private int idInt;
-        private string nomStr;
-        private string prenomStr;
-        private string adresseStr;
-        private string codePostalStr;
-        private string telephoneStr;
-        private string nomJeuStr;
-        private string plateformeStr;
-        private string genreStr;
-        private DateTime dateAchatDateTime;
-        private decimal prixDecimal;
+        #region Déclarations des tableaux
+
+        private string[] tPlatforme;
+        private string[] tGenre;
+        private decimal[,] tPrix;
+
         #endregion
 
         #region Déclarations des variables
@@ -121,21 +114,16 @@ namespace TransactionsNS
             tGenre = new string[] { "Action", "Aventure", "RPG", "Stratégie" };
         }
 
-        public Transactions(string nom, string prenom, string adresse, string codePostal,
-                            string telephone, string nomJeu, string plateforme,
-                            string genre, DateTime dateAchat, decimal prix)
+        private void InitPrix()
         {
-            idInt = compteur++;
-            Nom = nom;
-            Prenom = prenom;
-            Adresse = adresse;
-            CodePostal = codePostal;
-            Telephone = telephone;
-            NomJeu = nomJeu;
-            Plateforme = plateforme;
-            Genre = genre;
-            DateAchat = dateAchat;
-            Prix = prix;
+            tPrix = new decimal[5, 4]
+            {
+                { 19.99m, 29.99m, 39.99m, 49.99m },
+                { 49.99m, 59.99m, 69.99m, 79.99m },
+                { 39.99m, 49.99m, 59.99m, 69.99m },
+                { 29.99m, 39.99m, 49.99m, 59.99m },
+                { 9.99m, 14.99m, 19.99m, 24.99m }
+            };
         }
 
         #endregion
@@ -145,7 +133,7 @@ namespace TransactionsNS
         /// <summary>
         /// Constructeur par défaut
         /// </summary>
-        public void Enregistrer()
+        public Transactions()
         {
             InitPlatforme();
             InitGenre();
@@ -217,31 +205,26 @@ namespace TransactionsNS
         public string[] GetPlatforme() => tPlatforme;
         public string[] GetGenre() => tGenre;
 
-        private decimal[,] tPrix = new decimal[5, 4]
+        public decimal GetPrix(int platforme, int genre)
         {
-            { 19.99m, 29.99m, 39.99m, 49.99m },
-            { 49.99m, 59.99m, 69.99m, 79.99m },
-            { 39.99m, 49.99m, 59.99m, 69.99m },
-            { 29.99m, 39.99m, 49.99m, 59.99m },
-            { 9.99m, 14.99m, 19.99m, 24.99m }
-        };
-
-        public decimal GetPrix(int plateforme, int genre)
-        {
-            return tPrix[plateforme, genre];
+            if (platforme < 0 || platforme >= tPlatforme.Length)
+                throw new ArgumentOutOfRangeException(nameof(platforme), "Indice de plateforme hors limites!");
+            if (genre < 0 || genre >= tGenre.Length)
+                throw new ArgumentOutOfRangeException(nameof(genre), "Indice de genre hors limites!");
+            return tPrix[platforme, genre];
         }
 
         public decimal GetPrix(string platforme, string genre)
         {
-            int i = Array.IndexOf(tPlatforme, plateforme);
-            int j = Array.IndexOf(tGenre, genre);
-            if (i == -1 || j == -1)
-                throw new ArgumentException("Plateforme ou genre invalide!");
-            return tPrix[i, j];
+            int posPlatforme = Array.IndexOf(tPlatforme, platforme);
+            int posGenre = Array.IndexOf(tGenre, genre);
+            if (posPlatforme < 0)
+                throw new ArgumentException("Plateforme inconnue!", nameof(platforme));
+            if (posGenre < 0)
+                throw new ArgumentException("Genre inconnu!", nameof(genre));
+            return tPrix[posPlatforme, posGenre];
         }
 
         #endregion
     }
 }
-
-

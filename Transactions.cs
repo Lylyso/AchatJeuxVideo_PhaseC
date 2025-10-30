@@ -1,6 +1,10 @@
-﻿using System;
+﻿
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,16 +12,11 @@ namespace TransactionsNS
 {
     /// <summary>
     /// Classe Transactions permettant de récupérer les prix selon la plateforme et le genre.
-    /// Contient des surcharges GetPrix avec validation et gestion d'exceptions.
-    /// 
-    ///Implémente les 3 techniques de transfert:
-    ///  - Par propriétés: définir les propriétés puis appeler Enregistrer()
-    ///  - Par constructeur: fournir les valeurs au constructeur
-    ///  - Par méthode Enregistrer(...): fournir les valeurs puis appeler Enregistrer() interne
-    /// Valide Plateforme/Genre à partir de la grille de tarification (classe Transactions)
-    /// et calcule le Prix correspondant.
+    /// Implémente les 3 techniques de transfert :
+    /// - Par propriétés : définir les propriétés puis appeler Enregistrer()
+    /// - Par constructeur : fournir les valeurs au constructeur
+    /// - Par méthode Enregistrer(...) : fournir les valeurs puis appeler Enregistrer() interne
     /// </summary>
-    
     public class Transactions
     {
         #region Déclarations des tableaux
@@ -37,13 +36,13 @@ namespace TransactionsNS
         private string platforme;
         private string genre;
         private decimal prix;
-        private int quantite;   
+        private int quantite;
         private decimal total;
         private DateTime dateTransaction;
 
         #endregion
 
-        #region Déclarations des variables public Get Set
+        #region Propriétés publiques
 
         public int Id
         {
@@ -93,14 +92,15 @@ namespace TransactionsNS
         #endregion
 
         #region Initialisation des tableaux
+
         private void InitPlatforme()
         {
-            tPlatforme = new string[5] { "PC", "PlayStation", "Xbox", "Switch", "Mobile" };
+            tPlatforme = new string[] { "PC", "PlayStation", "Xbox", "Switch", "Mobile" };
         }
 
         private void InitGenre()
         {
-            tGenre = new string[4] { "Action", "Aventure", "RPG", "Stratégie" };
+            tGenre = new string[] { "Action", "Aventure", "RPG", "Stratégie" };
         }
 
         private void InitPrix()
@@ -114,32 +114,32 @@ namespace TransactionsNS
                 { 9.99m, 14.99m, 19.99m, 24.99m }
             };
         }
+
         #endregion
 
-        #region Constructeur
+        #region Constructeurs
+
         /// <summary>
-        /// Constructeur par défaut : initialise les tableaux.
+        /// Constructeur par défaut
         /// </summary>
         public Transactions()
         {
             InitPlatforme();
             InitGenre();
             InitPrix();
-
             compteurID++;
             id = compteurID;
-
         }
-        #endregion
-
-        #region  Constructeur avec paramètres
 
         /// <summary>
-        /// constructeurs avec parametres
-        /// Initialiser toutes les variables privées en passant par les propriétés
+        /// Constructeur avec paramètres
+        /// </summary>
+        public Transactions(string nomClient, string nomJeu, string platforme, string genre, int quantite, DateTime dateTransaction)
+        {
+            InitPlatforme();
+            InitGenre();
+            InitPrix();
 
-      public Transactions(string nomClient, string nomJeu, string platforme, string genre, int quantite, DateTime dateTransaction)
-      {          
             this.NomClient = nomClient;
             this.NomJeu = nomJeu;
             this.Platforme = platforme;
@@ -148,41 +148,51 @@ namespace TransactionsNS
             this.DateTransaction = dateTransaction;
             this.Prix = GetPrix(platforme, genre);
             this.Total = this.Prix * this.Quantite;
+
             compteurID++;
             id = compteurID;
 
-            //appeler methode enregistrer ici (Mohamed)
-
-      }
-        
+            Enregistrer();
+        }
 
         #endregion
 
-        #region Getters pour ComboBox
+        //Partie Mohamed
+
+        #region Méthodes principales
+
         /// <summary>
-        /// Retourne toutes les plateformes disponibles.
+        /// Enregistre la transaction (console)
         /// </summary>
+        public void Enregistrer()
+        {
+            Console.WriteLine("Transaction enregistrée :");
+            Console.WriteLine($"ID: {Id}, Client: {NomClient}, Jeu: {NomJeu}, Plateforme: {Platforme}, Genre: {Genre}, Quantité: {Quantite}, Prix Unitaire: {Prix}, Total: {Total}, Date: {DateTransaction}");
+        }
+
+        /// <summary>
+        /// Enregistre la transaction via paramètres
+        /// </summary>
+        public void Enregistrer(string nomClient, string nomJeu, string platforme, string genre, int quantite, DateTime dateTransaction)
+        {
+            this.NomClient = nomClient;
+            this.NomJeu = nomJeu;
+            this.Platforme = platforme;
+            this.Genre = genre;
+            this.Quantite = quantite;
+            this.DateTransaction = dateTransaction;
+            this.Prix = GetPrix(platforme, genre);
+            this.Total = this.Prix * this.Quantite;
+
+            Enregistrer();
+        }
+
+        #endregion
+
+        #region Méthodes utilitaires
+
         public string[] GetPlatforme() => tPlatforme;
-
-        /// <summary>
-        /// Retourne tous les genres disponibles.
-        /// </summary>
         public string[] GetGenre() => tGenre;
-        #endregion
-
-        #region Méthodes GetPrix surchargées
-
-        /// <summary>
-        /// Retourne le prix selon les indices du tableau.
-        /// </summary>
-        /// <param name="platforme">Indice de la plateforme (0 à 4).</param>
-        /// <param name="genre">Indice du genre (0 à 3).</param>
-        /// <returns>Prix du jeu (Decimal).</returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// L'indice plateforme ou genre est hors limites.
-        /// </exception>
-        /// 
-
 
         public decimal GetPrix(int platforme, int genre)
         {
@@ -192,19 +202,6 @@ namespace TransactionsNS
                 throw new ArgumentOutOfRangeException(nameof(genre), "Indice de genre hors limites!");
             return tPrix[platforme, genre];
         }
-
-
-
-        /// <summary>
-        /// Retourne le prix selon le nom de la plateforme et du genre.
-        /// </summary>
-        /// <param name="platforme">Nom de la plateforme.</param>
-        /// <param name="genre">Nom du genre.</param>
-        /// <returns>Prix du jeu (Decimal).</returns>
-        /// <exception cref="ArgumentException">
-        /// Plateforme inconnue ou genre inconnu.
-        /// </exception>
-        /// 
 
         public decimal GetPrix(string platforme, string genre)
         {
@@ -218,8 +215,7 @@ namespace TransactionsNS
         }
 
         #endregion
-
-        
-
     }
 }
+
+

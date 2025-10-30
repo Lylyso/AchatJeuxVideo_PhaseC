@@ -1,38 +1,28 @@
-﻿/*
- *      Programmeur :   Lydianne , Labib , Mohamed
- *      Date :          23 Septembre 2025
- *   
- *      Solution:       AchatJeuxVideo.sln
- *      Projet:         AchatJeuxVideo.csproj
- *      Classe:         AchatJeuxVideo.cs
- *      
- *      But:            calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
- * 
- *      Info:           Phase A.
- * 
- */
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿
+/*Programmeur :   Lydianne , Labib, Mohamed
+*      Date :          30 Octobre 2025
+*   
+*      Solution:       AchatJeuxVideo.sln
+* Projet:         AchatJeuxVideo.csproj
+* Classe:         AchatJeuxVideo.cs
+*
+* But:            Calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
+* 
+*      Info:           Phase C.
+*/
 
+using System;
+using System.Windows.Forms;
 using TransactionsNS;
 using g = AchatJeuxVideo.AchatJeuxVideoGeneraleClasse;
 using ce = AchatJeuxVideo.AchatJeuxVideoGeneraleClasse.CodesErreurs;
-
 using TypesNS;
 
 namespace AchatJeuxVideo
 {
     public partial class AchatJeuxVideo : Form
     {
-
-        #region Declaration
+        #region Déclaration
 
         Transactions oTrans;
         Types oTypes;
@@ -42,7 +32,7 @@ namespace AchatJeuxVideo
         #region Constructeur
 
         /// <summary>
-        /// Constructeur
+        /// Constructeur principal du formulaire
         /// </summary>
         public AchatJeuxVideo()
         {
@@ -62,8 +52,8 @@ namespace AchatJeuxVideo
                 oTrans = new Transactions();
                 oTypes = new Types();
 
-                platformeComboBox.Items.AddRange(oTypes.GetTypes(Types.CodeTypes.Plateforme));
-                genreComboBox.Items.AddRange(oTypes.GetTypes(Types.CodeTypes.Genre));
+                platformeComboBox.Items.AddRange(oTrans.GetPlatforme());
+                genreComboBox.Items.AddRange(oTrans.GetGenre());
 
                 platformeComboBox.SelectedIndex = 0;
                 genreComboBox.SelectedIndex = 0;
@@ -78,14 +68,17 @@ namespace AchatJeuxVideo
             }
         }
 
-        private void PlatformeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        #endregion
+
+        #region Obtenir le prix
+
+        private void platformeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
                 if (platformeComboBox.SelectedIndex != -1 && genreComboBox.SelectedIndex != -1)
                 {
-                    prixLabel.Text = oTrans.GetPrix(platformeComboBox.SelectedIndex, genreComboBox.SelectedIndex)
-                                           .ToString("C2");
+                    prixLabel.Text = oTrans.GetPrix(platformeComboBox.SelectedIndex, genreComboBox.SelectedIndex).ToString("C2");
                 }
             }
             catch (ArgumentException ex)
@@ -98,16 +91,12 @@ namespace AchatJeuxVideo
             }
         }
 
-        #endregion
-
-        #region Obtenir le prix
-
         private void PlateformeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
                 if (platformeComboBox.SelectedIndex != -1 && genreComboBox.SelectedIndex != -1)
-                    prixLabel.Text = oTrans.GetPrix(platformeComboBox.SelectedIndex, genreComboBox.SelectedIndex).ToString("C2");
+                    prixJeuxLabel.Text = oTrans.GetPrix(platformeComboBox.SelectedIndex, genreComboBox.SelectedIndex).ToString("C2");
             }
             catch (Exception)
             {
@@ -118,17 +107,77 @@ namespace AchatJeuxVideo
         #endregion
 
         #region Quitter
-        private void QuitterButton_Click(object sender, EventArgs e)
+
+        private void quitterToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             this.Close();
         }
 
         #endregion
 
+        #region À propos
+
         private void aproposDeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmAPropos frm = new FrmAPropos();
             frm.ShowDialog();
         }
+
+        #endregion
+
+        //mohamed
+        #region Enregistrement (test des 3 techniques)
+
+        /// <summary>
+        /// Enregistre la transaction en testant les 3 techniques de transfert
+        /// </summary>
+        private void enregistrerButton_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                string nomClient = nomMaskedTextBox.Text;
+                string nomJeu = nomJeuMaskedTextBox.Text;
+                string plateforme = platformeComboBox.Text;
+                string genre = genreComboBox.Text;
+                int quantite = 1;
+                DateTime date = DateTime.Now;
+
+                // Technique 1 : Par propriété
+                oTrans.NomClient = nomClient;
+                oTrans.NomJeu = nomJeu;
+                oTrans.Platforme = plateforme;
+                oTrans.Genre = genre;
+                oTrans.Quantite = quantite;
+                oTrans.DateTransaction = date;
+                oTrans.Prix = oTrans.GetPrix(plateforme, genre);
+                oTrans.Total = oTrans.Prix * quantite;
+                oTrans.Enregistrer();
+
+                // Technique 2 : Par méthode
+                oTrans.Enregistrer(nomClient, nomJeu, plateforme, genre, quantite, date);
+
+                // Technique 3 : Par constructeur
+                Transactions transConstructeur = new Transactions(nomClient, nomJeu, plateforme, genre, quantite, date);
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show("Erreur d'argument : " + ex.Message);
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show("Erreur de format : " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur inattendue : " + ex.Message);
+            }
+        }
+
+
+        #endregion
+
+      
     }
 }
+
+

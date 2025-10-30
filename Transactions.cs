@@ -219,8 +219,7 @@ namespace TransactionsNS
 
         #endregion
 
-        #region Enregistrer
+        //Test master
 
-        #endregion
     }
 }

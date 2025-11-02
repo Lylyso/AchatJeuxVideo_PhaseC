@@ -253,7 +253,6 @@
             this.platformeComboBox.Name = "platformeComboBox";
             this.platformeComboBox.Size = new System.Drawing.Size(277, 24);
             this.platformeComboBox.TabIndex = 26;
-            this.platformeComboBox.SelectedIndexChanged += new System.EventHandler(this.platformeComboBox_SelectedIndexChanged);
             // 
             // dateAchatDateTimePicker
             // 

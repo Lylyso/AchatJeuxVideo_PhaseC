@@ -5,7 +5,7 @@
 * Projet:         VentesPneus.csproj
 * Classe:         Transactions.cs
 *
-* But:            Enregistrer une transaction d’achat de pneus selon la plateforme et le genre .
+* But:            Enregistrer une transaction d’achat  selon la plateforme et le genre .
 * 
 */
 

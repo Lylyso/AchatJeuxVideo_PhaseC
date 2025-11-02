@@ -1,8 +1,8 @@
 ﻿/*Programmeur :   Lydianne , Labib, Mohamed
 *      Date :          30 Octobre 2025
 *   
-* Solution:       VentesPneus.sln
-* Projet:         VentesPneus.csproj
+* Solution:       AchatJeuxVideo.sln
+* Projet:         AchatJeuxVideo.csproj
 * Classe:         Transactions.cs
 *
 * But:            Enregistrer une transaction d’achat  selon la plateforme et le genre .

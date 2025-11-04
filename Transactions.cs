@@ -222,5 +222,7 @@ namespace TransactionsNS
         #region Enregistrer
 
         #endregion
+
+        //test regles de gestion
     }
 }

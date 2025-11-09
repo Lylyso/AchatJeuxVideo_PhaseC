@@ -248,6 +248,7 @@
             this.genreComboBox.Name = "genreComboBox";
             this.genreComboBox.Size = new System.Drawing.Size(379, 32);
             this.genreComboBox.TabIndex = 27;
+            this.genreComboBox.SelectedIndexChanged += new System.EventHandler(this.PlatformeComboBox_SelectedIndexChanged);
             // 
             // platformeComboBox
             // 
@@ -259,11 +260,12 @@
             this.platformeComboBox.Name = "platformeComboBox";
             this.platformeComboBox.Size = new System.Drawing.Size(379, 32);
             this.platformeComboBox.TabIndex = 26;
+            this.platformeComboBox.SelectedIndexChanged += new System.EventHandler(this.PlatformeComboBox_SelectedIndexChanged);
             // 
             // dateAchatDateTimePicker
             // 
             this.dateAchatDateTimePicker.Location = new System.Drawing.Point(264, 44);
-            this.dateAchatDateTimePicker.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateAchatDateTimePicker.Margin = new System.Windows.Forms.Padding(4);
             this.dateAchatDateTimePicker.Name = "dateAchatDateTimePicker";
             this.dateAchatDateTimePicker.Size = new System.Drawing.Size(426, 29);
             this.dateAchatDateTimePicker.TabIndex = 11;
@@ -316,7 +318,7 @@
             this.imagePanel.Controls.Add(this.jeuxPictureBox);
             this.imagePanel.ForeColor = System.Drawing.SystemColors.ControlText;
             this.imagePanel.Location = new System.Drawing.Point(70, 68);
-            this.imagePanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.imagePanel.Margin = new System.Windows.Forms.Padding(4);
             this.imagePanel.Name = "imagePanel";
             this.imagePanel.Size = new System.Drawing.Size(1646, 514);
             this.imagePanel.TabIndex = 4;
@@ -337,7 +339,7 @@
             // 
             this.consolesPictureBox.Image = global::AchatJeuxVideo.Properties.Resources.consoles;
             this.consolesPictureBox.Location = new System.Drawing.Point(80, 222);
-            this.consolesPictureBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.consolesPictureBox.Margin = new System.Windows.Forms.Padding(4);
             this.consolesPictureBox.Name = "consolesPictureBox";
             this.consolesPictureBox.Size = new System.Drawing.Size(473, 266);
             this.consolesPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -348,7 +350,7 @@
             // 
             this.jeuxPictureBox.Image = global::AchatJeuxVideo.Properties.Resources.jeux_video1;
             this.jeuxPictureBox.Location = new System.Drawing.Point(960, 158);
-            this.jeuxPictureBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.jeuxPictureBox.Margin = new System.Windows.Forms.Padding(4);
             this.jeuxPictureBox.Name = "jeuxPictureBox";
             this.jeuxPictureBox.Size = new System.Drawing.Size(682, 357);
             this.jeuxPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -385,6 +387,7 @@
             this.enregistrerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
             this.enregistrerToolStripMenuItem.Size = new System.Drawing.Size(321, 40);
             this.enregistrerToolStripMenuItem.Text = "&Enregistrer";
+            this.enregistrerToolStripMenuItem.Click += new System.EventHandler(this.EnregistrerButton_Click);
             // 
             // quitterToolStripMenuItem
             // 

@@ -93,15 +93,7 @@ namespace AchatJeuxVideo
 
         private void PlateformeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                if (platformeComboBox.SelectedIndex != -1 && genreComboBox.SelectedIndex != -1)
-                    prixJeuxLabel.Text = oTrans.GetPrix(platformeComboBox.SelectedIndex, genreComboBox.SelectedIndex).ToString("C2");
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(g.tMessages[(int)ce.ErreurPrix]);
-            }
+
         }
 
         #endregion
@@ -133,7 +125,7 @@ namespace AchatJeuxVideo
         /// </summary>
         private void EnregistrerButton_Click(object sender, EventArgs e)
         {
-            try
+             try
             {
                 string nomClient = nomMaskedTextBox.Text;
                 string nomJeu = nomJeuMaskedTextBox.Text;

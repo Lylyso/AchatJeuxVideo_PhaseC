@@ -171,6 +171,9 @@ namespace AchatJeuxVideo
             {
                 MessageBox.Show("Erreur inattendue : " + ex.Message);
             }
+
+            MessageBox.Show("Date de paiement prévue : " + oTrans.DatePaiement.ToLongDateString());
+
         }
 
         #endregion

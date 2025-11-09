@@ -51,6 +51,7 @@ namespace TransactionsNS
             GenreObligatoire,
             PrixInvalide,
             DateLivraisonInvalide,
+            DateTransactionObligatoire,
             ErreurIndeterminee
         }
 
@@ -93,6 +94,9 @@ namespace TransactionsNS
             tMessagesErreurs[(int)CodesErreurs.PrixInvalide] = "Le prix doit être supérieur à 0 et correspondre à la grille.";
             tMessagesErreurs[(int)CodesErreurs.DateLivraisonInvalide] = "La date de livraison doit être dans les 15 jours avant ou après la date courante.";
             tMessagesErreurs[(int)CodesErreurs.ErreurIndeterminee] = "Erreur indéterminée.";
+            tMessagesErreurs[(int)CodesErreurs.DateTransactionObligatoire] = "La date d'achat est obligatoire.";
+            
+
         }
 
         #endregion
@@ -220,6 +224,9 @@ namespace TransactionsNS
             get => dateTransaction;
             set
             {
+                if (value == default)
+                    throw new ArgumentNullException(tMessagesErreurs[(int)CodesErreurs.DateTransactionObligatoire]);
+
                 DateTime today = DateTime.Today;
                 if (value >= today.AddDays(-15) && value <= today.AddDays(15))
                 {
@@ -227,7 +234,8 @@ namespace TransactionsNS
                     datePaiement = dateTransaction.AddDays(30);
                 }
                 else
-                    throw new ArgumentOutOfRangeException(tMessagesErreurs[(int)CodesErreurs.DateLivraisonInvalide]);
+                    throw new ArgumentOutOfRangeException(
+                        tMessagesErreurs[(int)CodesErreurs.DateLivraisonInvalide]);
             }
         }
 
@@ -238,22 +246,23 @@ namespace TransactionsNS
             get => prix;
             set
             {
-                if (value > 0)
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException(tMessagesErreurs[(int)CodesErreurs.PrixInvalide]);
+
+                int iPlat = Array.IndexOf(tPlatforme, Platforme);
+                int iGenre = Array.IndexOf(tGenre, Genre);
+
+                if (iPlat >= 0 && iGenre >= 0)
                 {
-                    int iPlat = Array.IndexOf(tPlatforme, Platforme);
-                    int iGenre = Array.IndexOf(tGenre, Genre);
-                    if (iPlat >= 0 && iGenre >= 0)
-                    {
-                        if (tPrix[iPlat, iGenre] == value)
-                            prix = value;
-                        else
-                            throw new ArgumentException(tMessagesErreurs[(int)CodesErreurs.PrixInvalide]);
-                    }
+                    if (tPrix[iPlat, iGenre] == value)
+                        prix = value;
                     else
-                        throw new ArgumentNullException(tMessagesErreurs[(int)CodesErreurs.PrixInvalide]);
+                        throw new ArgumentException(tMessagesErreurs[(int)CodesErreurs.PrixInvalide]);
                 }
                 else
-                    throw new ArgumentOutOfRangeException(tMessagesErreurs[(int)CodesErreurs.PrixInvalide]);
+                {
+                    throw new ArgumentNullException(tMessagesErreurs[(int)CodesErreurs.PrixInvalide]);
+                }
             }
         }
 

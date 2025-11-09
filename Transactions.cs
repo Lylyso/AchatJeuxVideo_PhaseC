@@ -314,11 +314,6 @@ namespace TransactionsNS
         }
 
         #endregion
-
-        #region Enregistrer
-
-        #endregion
-
-        //test regles de gestion
+        
     }
 }

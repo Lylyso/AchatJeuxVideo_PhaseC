@@ -1,5 +1,5 @@
 ﻿/*Programmeur :   Lydianne , Labib, Mohamed
-*      Date :          30 Octobre 2025
+*      Date :     17 Novembre 2025
 *   
 * Solution:       AchatJeuxVideo.sln
 * Projet:         AchatJeuxVideo.csproj
@@ -12,10 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Text.RegularExpressions;     // AJOUT IMPORTANT
 
 namespace TransactionsNS
 {
@@ -31,7 +30,12 @@ namespace TransactionsNS
 
         #region Déclarations des variables
 
-        private static int compteurID = 0;
+        private const string REGEX_CODE_POSTAL = @"^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$";
+        private const string REGEX_TELEPHONE = @"^\(?\d{3}\)?[ -.]?\d{3}[ -.]?\d{4}$";
+
+        //variable publique statique pour numéro de transaction
+        public static int CompteurTransactions = 0;
+
         private int id;
         private string nomClient;
         private string nomJeu;
@@ -42,6 +46,9 @@ namespace TransactionsNS
         private decimal total;
         private DateTime dateTransaction;
         private DateTime datePaiement;
+
+        private string codePostal;
+        private string telephone;
 
         private enum CodesErreurs
         {
@@ -70,7 +77,6 @@ namespace TransactionsNS
         {
             tGenre = new string[] { "Action", "Aventure", "RPG", "Stratégie" };
         }
-
 
         private void InitPrix()
         {
@@ -109,35 +115,11 @@ namespace TransactionsNS
             InitGenre();
             InitPrix();
             InitMessagesErreurs();
-            compteurID++;
-            id = compteurID;
-        }
-
-        public Transactions(string nomClient, string nomJeu, string platforme, string genre, int quantite, DateTime dateTransaction)
-        {
-            InitPlatforme();
-            InitGenre();
-            InitPrix();
-            InitMessagesErreurs();
-
-            this.NomClient = nomClient;
-            this.NomJeu = nomJeu;
-            this.Platforme = platforme;
-            this.Genre = genre;
-            this.Quantite = quantite;
-            this.DateTransaction = dateTransaction;
-            this.Prix = GetPrix(platforme, genre);
-            this.Total = this.Prix * this.Quantite;
-
-            compteurID++;
-            id = compteurID;
-
-            Enregistrer();
         }
 
         #endregion
 
-        #region Propriétés avec validations (Personne 1)
+        #region Propriétés avec validations 
 
         public int Id => id;
 
@@ -272,14 +254,53 @@ namespace TransactionsNS
             set => total = value;
         }
 
+
+        public string CodePostal
+        {
+            get => codePostal;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("Le code postal est obligatoire.");
+
+                if (!Regex.IsMatch(value.Trim(), REGEX_CODE_POSTAL))
+                    throw new ArgumentException("Code postal canadien invalide (ex: H2X 3L4).");
+
+                codePostal = value.Trim().ToUpper();
+            }
+        }
+
+        public string Telephone
+        {
+            get => telephone;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("Le téléphone est obligatoire.");
+
+                if (!Regex.IsMatch(value.Trim(), REGEX_TELEPHONE))
+                    throw new ArgumentException("Téléphone canadien invalide (ex: 514-555-1234).");
+
+                telephone = value.Trim();
+            }
+        }
+
         #endregion
 
         #region Méthodes principales
 
         public void Enregistrer()
         {
+            // incrémentation du numéro de transaction
+            CompteurTransactions++;
+            id = CompteurTransactions;
+
             Console.WriteLine("Transaction enregistrée :");
-            Console.WriteLine($"ID: {Id}, Client: {NomClient}, Produit: {NomJeu}, Marque: {Platforme}, Type: {Genre}, Quantité: {Quantite}, Prix: {Prix:C}, Total: {Total:C}, Livraison: {DateTransaction:d}, Paiement dû: {DatePaiement:d}");
+            Console.WriteLine($"ID: {Id}, Client: {NomClient}, Produit: {NomJeu}");
+            Console.WriteLine($"Plateforme: {Platforme}, Genre: {Genre}");
+            Console.WriteLine($"Quantité: {Quantite}, Prix: {Prix:C}, Total: {Total:C}");
+            Console.WriteLine($"Code Postal: {CodePostal}, Téléphone: {Telephone}");
+            Console.WriteLine($"Date: {DateTransaction:d}, Paiement dû: {DatePaiement:d}");
         }
 
         public void Enregistrer(string nomClient, string nomJeu, string platforme, string genre, int quantite, DateTime dateTransaction)

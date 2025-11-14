@@ -157,7 +157,7 @@ namespace AchatJeuxVideo
                 oTrans.Enregistrer(nomClient, nomJeu, plateforme, genre, quantite, date);
 
                 // Technique 3 : Par constructeur
-                Transactions transConstructeur = new Transactions(nomClient, nomJeu, plateforme, genre, quantite, date);
+                //Transactions transConstructeur = new Transactions(nomClient, nomJeu, plateforme, genre, quantite, date);
             }
             catch (ArgumentException ex)
             {

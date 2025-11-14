@@ -30,7 +30,6 @@ namespace TransactionsNS
 
         #region Déclarations des variables
 
-        // Regex demandées dans le devoir
         private const string REGEX_CODE_POSTAL = @"^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$";
         private const string REGEX_TELEPHONE = @"^\(?\d{3}\)?[ -.]?\d{3}[ -.]?\d{4}$";
 
@@ -48,7 +47,6 @@ namespace TransactionsNS
         private DateTime dateTransaction;
         private DateTime datePaiement;
 
-        // AJOUT : demandés pour validation Regex
         private string codePostal;
         private string telephone;
 

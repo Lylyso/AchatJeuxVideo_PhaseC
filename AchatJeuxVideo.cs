@@ -52,8 +52,11 @@ namespace AchatJeuxVideo
                 oTrans = new Transactions();
                 oTypes = new Types();
 
-                platformeComboBox.Items.AddRange(oTrans.GetPlatforme());
-                genreComboBox.Items.AddRange(oTrans.GetGenre());
+                platformeComboBox.Items.Clear();
+                genreComboBox.Items.Clear();
+
+                platformeComboBox.Items.AddRange(oTypes.GetTypes(Types.CodeTypes.Plateforme));
+                genreComboBox.Items.AddRange(oTypes.GetTypes(Types.CodeTypes.Genre));
 
                 platformeComboBox.SelectedIndex = 0;
                 genreComboBox.SelectedIndex = 0;

@@ -15,21 +15,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;     // AJOUT IMPORTANT
+using System.IO; // AJOUTER CETTE DIRECTIVE
 
 namespace TransactionsNS
 {
     public class Transactions
     {
         #region Déclarations des tableaux
-
+        // Tableaux dynamiques chargés à partir des fichiers
         private string[] tPlatforme;
         private string[] tGenre;
-        private decimal[,] tPrix;
-
+        private decimal[,] tPrix; // Tableau des prix par [plateforme, genre]
         #endregion
 
         #region Déclarations des variables
-
+        // Expressions régulières pour valider code postal et téléphone
         private const string REGEX_CODE_POSTAL = @"^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$";
         private const string REGEX_TELEPHONE = @"^\(?\d{3}\)?[ -.]?\d{3}[ -.]?\d{4}$";
 
@@ -46,10 +46,10 @@ namespace TransactionsNS
         private decimal total;
         private DateTime dateTransaction;
         private DateTime datePaiement;
-
         private string codePostal;
         private string telephone;
 
+        // Codes d’erreurs internes
         private enum CodesErreurs
         {
             NomObligatoire,
@@ -62,33 +62,204 @@ namespace TransactionsNS
             ErreurIndeterminee
         }
 
+        // Messages associés aux erreurs
         private string[] tMessagesErreurs;
-
         #endregion
 
-        #region Initialisation
-
+        #region Initialisation (lectures des fichiers)
+        // Lance l’initialisation des plateformes 
         private void InitPlatforme()
         {
-            tPlatforme = new string[] { "PC", "PlayStation", "Xbox", "Switch", "Mobile" };
+            InitPlatformes();
         }
 
+        // Lecture des plateformes depuis Marques.data
+        private void InitPlatformes()
+        {
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "plateformes.data");
+
+            try
+            {
+                if (!File.Exists(filePath))
+                    throw new FileNotFoundException("Fichier plateformes.data introuvable.", filePath);
+
+                string[] lignes = File.ReadAllLines(filePath);
+
+                if (lignes.Length == 0)
+                    throw new FormatException("Le fichier plateformes.data est vide.");
+
+                int nbPlatformes;
+
+                // Respect EXACT du pseudo-code
+                try
+                {
+                    nbPlatformes = int.Parse(lignes[0].Trim());
+                }
+                catch (FormatException)
+                {
+                    throw;
+                }
+
+                if (nbPlatformes <= 0)
+                    throw new FormatException("Le nombre de plateformes est invalide.");
+
+                if (lignes.Length - 1 < nbPlatformes)
+                    throw new FormatException("Il manque des plateformes dans le fichier.");
+
+                tPlatforme = new string[nbPlatformes];
+
+                // Boucle EXACTE du pseudo-code
+                for (int i = 0; i < nbPlatformes; i++)
+                {
+                    string ligne = lignes[i + 1].Trim();
+
+                    if (string.IsNullOrWhiteSpace(ligne))
+                        throw new FormatException("Une plateforme vide a été trouvée.");
+
+                    tPlatforme[i] = ligne;
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erreur InitMarques", ex);
+            }
+        }
+
+        // Lecture des genres (ici réutilise Marques.data volontairement selon votre version actuelle)
         private void InitGenre()
         {
-            tGenre = new string[] { "Action", "Aventure", "RPG", "Stratégie" };
+            // NOTE: Peut être adapté pour un fichier Genres.data distinct
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "genres.data");
+
+            try
+            {
+                // Vérifier l’existence du fichier
+                if (!File.Exists(filePath))
+                    throw new FileNotFoundException("Fichier genres.data introuvable", filePath);
+
+                // Lecture de toutes les lignes
+                string[] lignes = File.ReadAllLines(filePath);
+
+                if (lignes.Length == 0)
+                    throw new FormatException("Le fichier genres.data est vide.");
+
+                int nbGenres;
+
+                // Essayer de convertir la première ligne
+                try
+                {
+                    nbGenres = int.Parse(lignes[0].Trim());
+                }
+                catch (FormatException)
+                {
+                    // Respect exact du pseudo-code
+                    throw;
+                }
+
+                // Vérifier le nombre indiqué
+                if (nbGenres <= 0)
+                    throw new FormatException("Le nombre de genres est invalide.");
+
+                // Vérifier que le fichier contient assez de lignes
+                if (lignes.Length - 1 < nbGenres)
+                    throw new FormatException("Le fichier ne contient pas assez de genres.");
+
+                // Redimensionner et remplir
+                tGenre = new string[nbGenres];
+
+                for (int i = 0; i < nbGenres; i++)
+                {
+                    string ligne = lignes[i + 1].Trim();
+
+                    if (string.IsNullOrWhiteSpace(ligne))
+                        throw new FormatException("Un genre vide a été trouvé dans le fichier.");
+
+                    tGenre[i] = ligne;
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                // Re-lancer exactement comme demandé
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Exception générale enveloppée
+                throw new Exception("Erreur InitGenres", ex);
+            }
         }
 
+        // Lecture du tableau des prix (dimensions + valeurs)
         private void InitPrix()
         {
-            tPrix = new decimal[5, 4]
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Prix.data");
+
+            try
             {
-                { 19.99m, 29.99m, 39.99m, 49.99m },
-                { 49.99m, 59.99m, 69.99m, 79.99m },
-                { 39.99m, 49.99m, 59.99m, 69.99m },
-                { 29.99m, 39.99m, 49.99m, 59.99m },
-                { 9.99m, 14.99m, 19.99m, 24.99m }
-            };
+                if (!File.Exists(filePath))
+                    throw new FileNotFoundException("Fichier Prix.data introuvable.", filePath);
+
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    // LIRE nbMarques
+                    int nbMarques = 0;
+                    try
+                    {
+                        nbMarques = int.Parse(sr.ReadLine().Trim());
+                    }
+                    catch (FormatException)
+                    {
+                        throw new FormatException("Le nombre de marques est invalide dans Prix.data.");
+                    }
+
+                    // LIRE nbGenres
+                    int nbGenres = 0;
+                    try
+                    {
+                        nbGenres = int.Parse(sr.ReadLine().Trim());
+                    }
+                    catch (FormatException)
+                    {
+                        throw new FormatException("Le nombre de genres est invalide dans Prix.data.");
+                    }
+
+                    if (nbMarques <= 0 || nbGenres <= 0)
+                        throw new FormatException("Les dimensions du tableau de prix sont invalides.");
+
+                    tPrix = new decimal[nbMarques, nbGenres];
+
+                    // Boucles de lecture des prix
+                    for (int i = 0; i < nbMarques; i++)
+                    {
+                        for (int j = 0; j < nbGenres; j++)
+                        {
+                            string ligne = sr.ReadLine();
+                            if (ligne == null)
+                                throw new FormatException("Données manquantes dans Prix.data.");
+
+                            try { tPrix[i, j] = decimal.Parse(ligne.Trim()); }
+                            catch (FormatException)
+                            {
+                                throw new FormatException($"Prix invalide à la ligne pour [{i},{j}].");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erreur InitPrix", ex);
+            }
         }
+
 
         private void InitMessagesErreurs()
         {
@@ -101,14 +272,11 @@ namespace TransactionsNS
             tMessagesErreurs[(int)CodesErreurs.DateLivraisonInvalide] = "La date de livraison doit être dans les 15 jours avant ou après la date courante.";
             tMessagesErreurs[(int)CodesErreurs.ErreurIndeterminee] = "Erreur indéterminée.";
             tMessagesErreurs[(int)CodesErreurs.DateTransactionObligatoire] = "La date d'achat est obligatoire.";
-            
-
         }
-
         #endregion
 
         #region Constructeurs
-
+        // Constructeur par défaut : initialise tous les tableaux et messages
         public Transactions()
         {
             InitPlatforme();
@@ -116,13 +284,13 @@ namespace TransactionsNS
             InitPrix();
             InitMessagesErreurs();
         }
-
         #endregion
 
         #region Propriétés avec validations 
-
+        // Identifiant unique (attribué lors de Enregistrer)
         public int Id => id;
 
+        // Nom du client (obligatoire, non vide)
         public string NomClient
         {
             get => nomClient;
@@ -141,6 +309,7 @@ namespace TransactionsNS
             }
         }
 
+        // Nom du jeu (obligatoire)
         public string NomJeu
         {
             get => nomJeu;
@@ -159,6 +328,7 @@ namespace TransactionsNS
             }
         }
 
+        // Plateforme choisie (doit exister dans le tableau)
         public string Platforme
         {
             get => platforme;
@@ -177,6 +347,7 @@ namespace TransactionsNS
             }
         }
 
+        // Genre choisi (doit exister dans le tableau)
         public string Genre
         {
             get => genre;
@@ -195,12 +366,14 @@ namespace TransactionsNS
             }
         }
 
+        // Quantité > 0
         public int Quantite
         {
             get => quantite;
             set => quantite = value > 0 ? value : throw new ArgumentOutOfRangeException("La quantité doit être positive.");
         }
 
+        // Date de transaction valide ±15 jours autour d’aujourd’hui
         public DateTime DateTransaction
         {
             get => dateTransaction;
@@ -213,16 +386,17 @@ namespace TransactionsNS
                 if (value >= today.AddDays(-15) && value <= today.AddDays(15))
                 {
                     dateTransaction = value;
-                    datePaiement = dateTransaction.AddDays(30);
+                    datePaiement = dateTransaction.AddDays(30); // Paiement dans 30 jours
                 }
                 else
-                    throw new ArgumentOutOfRangeException(
-                        tMessagesErreurs[(int)CodesErreurs.DateLivraisonInvalide]);
+                    throw new ArgumentOutOfRangeException(tMessagesErreurs[(int)CodesErreurs.DateLivraisonInvalide]);
             }
         }
 
+        // Date de paiement (calculée automatiquement)
         public DateTime DatePaiement => datePaiement;
 
+        // Prix validé par rapport au tableau tPrix
         public decimal Prix
         {
             get => prix;
@@ -248,13 +422,14 @@ namespace TransactionsNS
             }
         }
 
+        // Total (peut être recalculé après affectations)
         public decimal Total
         {
             get => total;
             set => total = value;
         }
 
-
+        // Code postal (format canadien)
         public string CodePostal
         {
             get => codePostal;
@@ -270,6 +445,7 @@ namespace TransactionsNS
             }
         }
 
+        // Téléphone (format canadien)
         public string Telephone
         {
             get => telephone;
@@ -288,7 +464,7 @@ namespace TransactionsNS
         #endregion
 
         #region Méthodes principales
-
+        // Enregistre la transaction en cours (affiche les détails)
         public void Enregistrer()
         {
             // incrémentation du numéro de transaction
@@ -303,6 +479,7 @@ namespace TransactionsNS
             Console.WriteLine($"Date: {DateTransaction:d}, Paiement dû: {DatePaiement:d}");
         }
 
+        // Surcharge de la méthode Enregistrer avec paramètres explicites
         public void Enregistrer(string nomClient, string nomJeu, string platforme, string genre, int quantite, DateTime dateTransaction)
         {
             this.NomClient = nomClient;
@@ -315,14 +492,14 @@ namespace TransactionsNS
             this.Total = this.Prix * this.Quantite;
             Enregistrer();
         }
-
         #endregion
 
         #region Méthodes utilitaires
-
+        // Accesseurs directs pour les tableaux privés
         public string[] GetPlatforme() => tPlatforme;
         public string[] GetGenre() => tGenre;
 
+        // Récupération du prix selon indices
         public decimal GetPrix(int platforme, int genre)
         {
             if (platforme < 0 || platforme >= tPlatforme.Length)
@@ -332,6 +509,7 @@ namespace TransactionsNS
             return tPrix[platforme, genre];
         }
 
+        // Récupération du prix selon noms de plateforme et genre
         public decimal GetPrix(string platforme, string genre)
         {
             int posPlatforme = Array.IndexOf(tPlatforme, platforme);
@@ -342,7 +520,6 @@ namespace TransactionsNS
                 throw new ArgumentException("Genre inconnu!", nameof(genre));
             return tPrix[posPlatforme, posGenre];
         }
-
         #endregion
         
     }

@@ -63,6 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transactions.cs" />
     <Compile Include="Types\Types.cs" />
+    <None Include="Data\Prix.data" />
     <EmbeddedResource Include="AchatJeuxVideo.resx">
       <DependentUpon>AchatJeuxVideo.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -76,10 +77,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="AchatJeuxVideoClassDiagram.cd" />
-    <Content Include="Data\Modeles.data">
+    <Content Include="Data\genre.data">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Types.data">
+    <Content Include="Data\platformes.data">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\Settings.settings">

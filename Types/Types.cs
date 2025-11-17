@@ -7,24 +7,30 @@ namespace TypesNS
 {
     public class Types
     {
+        #region enum CodeTypes
         public enum CodeTypes
         {
             Plateforme,
             Genre
         }
+        #endregion
+
+        #region declaration tableaux
 
         private string[] tPlateformes;
         private string[] tGenres ;
 
+        #endregion
         public Types()
         {
             InitTypes();
             InitModeles();
         }
 
+        #region Initialisation des tableaux
         private void InitTypes()
         {
-            string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Types.data");
+            string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "platformes.data");
             List<string> liste = new List<string>();
             StreamReader sr = null;
 
@@ -32,7 +38,7 @@ namespace TypesNS
             {
                 // Vérifier si le fichier existe
                 if (!File.Exists(chemin))
-                    throw new FileNotFoundException("Le fichier Types.data est introuvable.", chemin);
+                    throw new FileNotFoundException("Le fichier platformes.data est introuvable.", chemin);
 
                 // Ouvrir le fichier en UTF-8
                 sr = new StreamReader(chemin, Encoding.UTF8, true);
@@ -62,7 +68,7 @@ namespace TypesNS
 
         private void InitModeles()
         {
-            string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Modeles.data");
+            string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "genre.data");
             List<string> liste = new List<string>();
             StreamReader sr = null;
 
@@ -70,7 +76,7 @@ namespace TypesNS
             {
                 // Vérifier si le fichier existe
                 if (!File.Exists(chemin))
-                    throw new FileNotFoundException("Le fichier Modeles.data est introuvable.", chemin);
+                    throw new FileNotFoundException("Le fichier genre.data est introuvable.", chemin);
 
                 // Ouvrir le fichier en UTF-8
                 sr = new StreamReader(chemin, Encoding.UTF8, true);
@@ -110,5 +116,6 @@ namespace TypesNS
                     throw new ArgumentOutOfRangeException(nameof(type), "Type invalide.");
             }
         }
+        #endregion  
     }
 }

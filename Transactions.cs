@@ -32,7 +32,8 @@ namespace TransactionsNS
         #endregion
 
         #region Déclarations des variables
-        // Culture requise par l’énoncé
+
+        // Culture 
         private static CultureInfo CultureEnCA = CultureInfo.GetCultureInfo("en-CA");
         // Les prix dans les fichiers sont en format US (point décimal)
         private static CultureInfo CultureEnUS = CultureInfo.GetCultureInfo("en-US");
@@ -207,7 +208,7 @@ namespace TransactionsNS
         {
             if (nouvellesRangees < 0 || nouvellesColonnes < 0)
                 throw new ArgumentOutOfRangeException();
-
+            
             T[,] nouveau = new T[nouvellesRangees, nouvellesColonnes];
 
             if (tableau != null && tableau.Length > 0)

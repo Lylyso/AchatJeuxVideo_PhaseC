@@ -1,4 +1,17 @@
-﻿using System;
+﻿
+/*     Programmeur :   Lydianne , Labib, Mohamed
+*      Date :          17 Octobre 2025
+*   
+*      Solution:       AchatJeuxVideo.sln
+*      Projet:         AchatJeuxVideo.csproj
+*      Classe:         AchatJeuxVideo.cs
+*
+*      But:            Calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
+* 
+*      Info:           Phase H
+*/
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;

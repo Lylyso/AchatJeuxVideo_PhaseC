@@ -1,21 +1,24 @@
-﻿/*Programmeur :   Lydianne , Labib, Mohamed
-*      Date :     17 Novembre 2025
+﻿
+/*     Programmeur :   Lydianne , Labib, Mohamed
+*      Date :          17 Octobre 2025
 *   
-* Solution:       AchatJeuxVideo.sln
-* Projet:         AchatJeuxVideo.csproj
-* Classe:         Transactions.cs
+*      Solution:       AchatJeuxVideo.sln
+*      Projet:         AchatJeuxVideo.csproj
+*      Classe:         AchatJeuxVideo.cs
 *
-* But:            Enregistrer une transaction d’achat  selon la plateforme et le genre .
+*      But:            Calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
 * 
+*      Info:           Phase H
 */
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;     // AJOUT IMPORTANT
-using System.IO; // AJOUTER CETTE DIRECTIVE
 
 namespace TransactionsNS
 {
@@ -29,6 +32,11 @@ namespace TransactionsNS
         #endregion
 
         #region Déclarations des variables
+        // Culture requise par l’énoncé
+        private static CultureInfo CultureEnCA = CultureInfo.GetCultureInfo("en-CA");
+        // Les prix dans les fichiers sont en format US (point décimal)
+        private static CultureInfo CultureEnUS = CultureInfo.GetCultureInfo("en-US");
+
         // Expressions régulières pour valider code postal et téléphone
         private const string REGEX_CODE_POSTAL = @"^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$";
         private const string REGEX_TELEPHONE = @"^\(?\d{3}\)?[ -.]?\d{3}[ -.]?\d{4}$";
@@ -73,193 +81,146 @@ namespace TransactionsNS
             InitPlatformes();
         }
 
-        // Lecture des plateformes depuis Marques.data
+        // une plateforme par ligne
+        // -------------------------------
         private void InitPlatformes()
         {
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "plateformes.data");
-
             try
             {
-                if (!File.Exists(filePath))
-                    throw new FileNotFoundException("Fichier plateformes.data introuvable.", filePath);
+                string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Platformes.data");
 
-                string[] lignes = File.ReadAllLines(filePath);
-
-                if (lignes.Length == 0)
-                    throw new FormatException("Le fichier plateformes.data est vide.");
-
-                int nbPlatformes;
-
-                // Respect EXACT du pseudo-code
-                try
+                using (StreamReader sr = new StreamReader(chemin))
                 {
-                    nbPlatformes = int.Parse(lignes[0].Trim());
-                }
-                catch (FormatException)
-                {
-                    throw;
-                }
+                    string first = sr.ReadLine();
+                    int nb = int.Parse(first); // FormatException si invalide
 
-                if (nbPlatformes <= 0)
-                    throw new FormatException("Le nombre de plateformes est invalide.");
+                    Array.Resize(ref tPlatforme, nb);
 
-                if (lignes.Length - 1 < nbPlatformes)
-                    throw new FormatException("Il manque des plateformes dans le fichier.");
-
-                tPlatforme = new string[nbPlatformes];
-
-                // Boucle EXACTE du pseudo-code
-                for (int i = 0; i < nbPlatformes; i++)
-                {
-                    string ligne = lignes[i + 1].Trim();
-
-                    if (string.IsNullOrWhiteSpace(ligne))
-                        throw new FormatException("Une plateforme vide a été trouvée.");
-
-                    tPlatforme[i] = ligne;
+                    for (int i = 0; i < nb; i++)
+                    {
+                        string ligne = sr.ReadLine();
+                        if (ligne == null) throw new FormatException();
+                        tPlatforme[i] = ligne.Trim();
+                    }
                 }
             }
             catch (FileNotFoundException)
             {
-                throw;
+                // Rejeter tel quel
+                throw new FileNotFoundException();
             }
-            catch (Exception ex)
+            catch (FormatException)
             {
-                throw new Exception("Erreur InitMarques", ex);
+                throw new FormatException();
+            }
+            catch (Exception)
+            {
+                throw new Exception();
             }
         }
 
-        // Lecture des genres (ici réutilise Marques.data volontairement selon votre version actuelle)
+        // -------------------------------
+        // Méthode 1D : genres
+        // Fichier: Data\genre.data 
+        // -------------------------------
         private void InitGenre()
         {
-            // NOTE: Peut être adapté pour un fichier Genres.data distinct
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "genres.data");
-
             try
             {
-                // Vérifier l’existence du fichier
-                if (!File.Exists(filePath))
-                    throw new FileNotFoundException("Fichier genres.data introuvable", filePath);
+                string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Genre.data");
 
-                // Lecture de toutes les lignes
-                string[] lignes = File.ReadAllLines(filePath);
-
-                if (lignes.Length == 0)
-                    throw new FormatException("Le fichier genres.data est vide.");
-
-                int nbGenres;
-
-                // Essayer de convertir la première ligne
-                try
+                using (StreamReader sr = new StreamReader(chemin))
                 {
-                    nbGenres = int.Parse(lignes[0].Trim());
-                }
-                catch (FormatException)
-                {
-                    // Respect exact du pseudo-code
-                    throw;
-                }
+                    string first = sr.ReadLine();
+                    int nb = int.Parse(first); // FormatException si invalide
 
-                // Vérifier le nombre indiqué
-                if (nbGenres <= 0)
-                    throw new FormatException("Le nombre de genres est invalide.");
+                    Array.Resize(ref tGenre, nb);
 
-                // Vérifier que le fichier contient assez de lignes
-                if (lignes.Length - 1 < nbGenres)
-                    throw new FormatException("Le fichier ne contient pas assez de genres.");
-
-                // Redimensionner et remplir
-                tGenre = new string[nbGenres];
-
-                for (int i = 0; i < nbGenres; i++)
-                {
-                    string ligne = lignes[i + 1].Trim();
-
-                    if (string.IsNullOrWhiteSpace(ligne))
-                        throw new FormatException("Un genre vide a été trouvé dans le fichier.");
-
-                    tGenre[i] = ligne;
+                    for (int i = 0; i < nb; i++)
+                    {
+                        string ligne = sr.ReadLine();
+                        if (ligne == null) throw new FormatException();
+                        tGenre[i] = ligne.Trim();
+                    }
                 }
             }
             catch (FileNotFoundException)
             {
-                // Re-lancer exactement comme demandé
-                throw;
+                throw new FileNotFoundException();
             }
-            catch (Exception ex)
+            catch (FormatException)
             {
-                // Exception générale enveloppée
-                throw new Exception("Erreur InitGenres", ex);
+                throw new FormatException();
+            }
+            catch (Exception)
+            {
+                throw new Exception();
             }
         }
 
-        // Lecture du tableau des prix (dimensions + valeurs)
+        // -------------------------------
         private void InitPrix()
         {
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Prix.data");
-
             try
             {
-                if (!File.Exists(filePath))
-                    throw new FileNotFoundException("Fichier Prix.data introuvable.", filePath);
+                string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Prix.data");
 
-                using (StreamReader sr = new StreamReader(filePath))
+                int nbRangees = (tPlatforme == null) ? 0 : tPlatforme.Length;
+                int nbColonnes = (tGenre == null) ? 0 : tGenre.Length;
+
+                if (nbRangees <= 0 || nbColonnes <= 0)
+                    throw new FormatException(); // dimensions inconnues
+
+                ResizeArray(ref tPrix, nbRangees, nbColonnes);
+
+                using (StreamReader sr = new StreamReader(chemin))
                 {
-                    // LIRE nbMarques
-                    int nbMarques = 0;
-                    try
+                    for (int r = 0; r < nbRangees; r++)
                     {
-                        nbMarques = int.Parse(sr.ReadLine().Trim());
-                    }
-                    catch (FormatException)
-                    {
-                        throw new FormatException("Le nombre de marques est invalide dans Prix.data.");
-                    }
-
-                    // LIRE nbGenres
-                    int nbGenres = 0;
-                    try
-                    {
-                        nbGenres = int.Parse(sr.ReadLine().Trim());
-                    }
-                    catch (FormatException)
-                    {
-                        throw new FormatException("Le nombre de genres est invalide dans Prix.data.");
-                    }
-
-                    if (nbMarques <= 0 || nbGenres <= 0)
-                        throw new FormatException("Les dimensions du tableau de prix sont invalides.");
-
-                    tPrix = new decimal[nbMarques, nbGenres];
-
-                    // Boucles de lecture des prix
-                    for (int i = 0; i < nbMarques; i++)
-                    {
-                        for (int j = 0; j < nbGenres; j++)
+                        for (int c = 0; c < nbColonnes; c++)
                         {
                             string ligne = sr.ReadLine();
-                            if (ligne == null)
-                                throw new FormatException("Données manquantes dans Prix.data.");
+                            if (ligne == null) throw new FormatException();
 
-                            try { tPrix[i, j] = decimal.Parse(ligne.Trim()); }
-                            catch (FormatException)
-                            {
-                                throw new FormatException($"Prix invalide à la ligne pour [{i},{j}].");
-                            }
+                            decimal val = decimal.Parse(ligne.Trim(), NumberStyles.Number, CultureEnUS);
+                            tPrix[r, c] = val;
                         }
                     }
                 }
             }
             catch (FileNotFoundException)
             {
-                throw;
+                throw new FileNotFoundException();
             }
-            catch (Exception ex)
+            catch (FormatException)
             {
-                throw new Exception("Erreur InitPrix", ex);
+                throw new FormatException();
+            }
+            catch (Exception)
+            {
+                throw new Exception();
             }
         }
 
+        // Redimensionnement d'un tableau 2D 
+        private static void ResizeArray<T>(ref T[,] tableau, int nouvellesRangees, int nouvellesColonnes)
+        {
+            if (nouvellesRangees < 0 || nouvellesColonnes < 0)
+                throw new ArgumentOutOfRangeException();
+
+            T[,] nouveau = new T[nouvellesRangees, nouvellesColonnes];
+
+            if (tableau != null && tableau.Length > 0)
+            {
+                int r = Math.Min(nouvellesRangees, tableau.GetLength(0));
+                int c = Math.Min(nouvellesColonnes, tableau.GetLength(1));
+                for (int i = 0; i < r; i++)
+                    for (int j = 0; j < c; j++)
+                        nouveau[i, j] = tableau[i, j];
+            }
+
+            tableau = nouveau;
+        }
 
         private void InitMessagesErreurs()
         {
@@ -279,6 +240,7 @@ namespace TransactionsNS
         // Constructeur par défaut : initialise tous les tableaux et messages
         public Transactions()
         {
+            // l'ordre garantit que InitPrix connaît les dimensions
             InitPlatforme();
             InitGenre();
             InitPrix();
@@ -287,10 +249,8 @@ namespace TransactionsNS
         #endregion
 
         #region Propriétés avec validations 
-        // Identifiant unique (attribué lors de Enregistrer)
         public int Id => id;
 
-        // Nom du client (obligatoire, non vide)
         public string NomClient
         {
             get => nomClient;
@@ -309,7 +269,6 @@ namespace TransactionsNS
             }
         }
 
-        // Nom du jeu (obligatoire)
         public string NomJeu
         {
             get => nomJeu;
@@ -328,7 +287,6 @@ namespace TransactionsNS
             }
         }
 
-        // Plateforme choisie (doit exister dans le tableau)
         public string Platforme
         {
             get => platforme;
@@ -347,7 +305,6 @@ namespace TransactionsNS
             }
         }
 
-        // Genre choisi (doit exister dans le tableau)
         public string Genre
         {
             get => genre;
@@ -366,14 +323,12 @@ namespace TransactionsNS
             }
         }
 
-        // Quantité > 0
         public int Quantite
         {
             get => quantite;
             set => quantite = value > 0 ? value : throw new ArgumentOutOfRangeException("La quantité doit être positive.");
         }
 
-        // Date de transaction valide ±15 jours autour d’aujourd’hui
         public DateTime DateTransaction
         {
             get => dateTransaction;
@@ -386,17 +341,15 @@ namespace TransactionsNS
                 if (value >= today.AddDays(-15) && value <= today.AddDays(15))
                 {
                     dateTransaction = value;
-                    datePaiement = dateTransaction.AddDays(30); // Paiement dans 30 jours
+                    datePaiement = dateTransaction.AddDays(30);
                 }
                 else
                     throw new ArgumentOutOfRangeException(tMessagesErreurs[(int)CodesErreurs.DateLivraisonInvalide]);
             }
         }
 
-        // Date de paiement (calculée automatiquement)
         public DateTime DatePaiement => datePaiement;
 
-        // Prix validé par rapport au tableau tPrix
         public decimal Prix
         {
             get => prix;
@@ -422,14 +375,12 @@ namespace TransactionsNS
             }
         }
 
-        // Total (peut être recalculé après affectations)
         public decimal Total
         {
             get => total;
             set => total = value;
         }
 
-        // Code postal (format canadien)
         public string CodePostal
         {
             get => codePostal;
@@ -445,7 +396,6 @@ namespace TransactionsNS
             }
         }
 
-        // Téléphone (format canadien)
         public string Telephone
         {
             get => telephone;
@@ -460,14 +410,11 @@ namespace TransactionsNS
                 telephone = value.Trim();
             }
         }
-
         #endregion
 
         #region Méthodes principales
-        // Enregistre la transaction en cours (affiche les détails)
         public void Enregistrer()
         {
-            // incrémentation du numéro de transaction
             CompteurTransactions++;
             id = CompteurTransactions;
 
@@ -479,7 +426,6 @@ namespace TransactionsNS
             Console.WriteLine($"Date: {DateTransaction:d}, Paiement dû: {DatePaiement:d}");
         }
 
-        // Surcharge de la méthode Enregistrer avec paramètres explicites
         public void Enregistrer(string nomClient, string nomJeu, string platforme, string genre, int quantite, DateTime dateTransaction)
         {
             this.NomClient = nomClient;
@@ -495,11 +441,9 @@ namespace TransactionsNS
         #endregion
 
         #region Méthodes utilitaires
-        // Accesseurs directs pour les tableaux privés
         public string[] GetPlatforme() => tPlatforme;
         public string[] GetGenre() => tGenre;
 
-        // Récupération du prix selon indices
         public decimal GetPrix(int platforme, int genre)
         {
             if (platforme < 0 || platforme >= tPlatforme.Length)
@@ -509,7 +453,6 @@ namespace TransactionsNS
             return tPrix[platforme, genre];
         }
 
-        // Récupération du prix selon noms de plateforme et genre
         public decimal GetPrix(string platforme, string genre)
         {
             int posPlatforme = Array.IndexOf(tPlatforme, platforme);
@@ -521,6 +464,5 @@ namespace TransactionsNS
             return tPrix[posPlatforme, posGenre];
         }
         #endregion
-        
     }
 }

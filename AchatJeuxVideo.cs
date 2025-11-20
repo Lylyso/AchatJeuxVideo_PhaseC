@@ -1,14 +1,14 @@
 ﻿
-/*Programmeur :   Lydianne , Labib, Mohamed
-*      Date :          30 Octobre 2025
+/*     Programmeur :   Lydianne , Labib, Mohamed
+*      Date :          17 Octobre 2025
 *   
 *      Solution:       AchatJeuxVideo.sln
-* Projet:         AchatJeuxVideo.csproj
-* Classe:         AchatJeuxVideo.cs
+*      Projet:         AchatJeuxVideo.csproj
+*      Classe:         AchatJeuxVideo.cs
 *
-* But:            Calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
+*      But:            Calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
 * 
-*      Info:           Phase C.
+*      Info:           Phase H
 */
 
 using System;
@@ -52,8 +52,11 @@ namespace AchatJeuxVideo
                 oTrans = new Transactions();
                 oTypes = new Types();
 
-                platformeComboBox.Items.AddRange(oTrans.GetPlatforme());
-                genreComboBox.Items.AddRange(oTrans.GetGenre());
+                platformeComboBox.Items.Clear();
+                genreComboBox.Items.Clear();
+
+                platformeComboBox.Items.AddRange(oTypes.GetTypes(Types.CodeTypes.Plateforme));
+                genreComboBox.Items.AddRange(oTypes.GetTypes(Types.CodeTypes.Genre));
 
                 platformeComboBox.SelectedIndex = 0;
                 genreComboBox.SelectedIndex = 0;
@@ -91,18 +94,7 @@ namespace AchatJeuxVideo
             }
         }
 
-        private void PlateformeComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (platformeComboBox.SelectedIndex != -1 && genreComboBox.SelectedIndex != -1)
-                    prixJeuxLabel.Text = oTrans.GetPrix(platformeComboBox.SelectedIndex, genreComboBox.SelectedIndex).ToString("C2");
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(g.tMessages[(int)ce.ErreurPrix]);
-            }
-        }
+       
 
         #endregion
 
@@ -171,6 +163,9 @@ namespace AchatJeuxVideo
             {
                 MessageBox.Show("Erreur inattendue : " + ex.Message);
             }
+
+            MessageBox.Show("Date de paiement prévue : " + oTrans.DatePaiement.ToLongDateString());
+
         }
 
         #endregion
@@ -186,7 +181,7 @@ namespace AchatJeuxVideo
 
         #endregion
 
-       
+
     }
 }
 

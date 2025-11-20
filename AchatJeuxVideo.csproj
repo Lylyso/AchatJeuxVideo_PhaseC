@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -63,8 +63,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transactions.cs" />
     <Compile Include="Types\Types.cs" />
-    <None Include="Data\Platformes.data" />
-    <None Include="Data\Prix.data" />
+    <Content Include="Data\Genre.data">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Plateformes.data">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Prix.data">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="AchatJeuxVideo.resx">
       <DependentUpon>AchatJeuxVideo.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -78,9 +85,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="AchatJeuxVideoClassDiagram.cd" />
-    <Content Include="Data\Genre.data">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

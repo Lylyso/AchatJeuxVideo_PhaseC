@@ -1,4 +1,17 @@
-﻿using System;
+﻿
+/*     Programmeur :   Lydianne , Labib, Mohamed
+*      Date :          17 Octobre 2025
+*   
+*      Solution:       AchatJeuxVideo.sln
+*      Projet:         AchatJeuxVideo.csproj
+*      Classe:         AchatJeuxVideo.cs
+*
+*      But:            Calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
+* 
+*      Info:           Phase H
+*/
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -24,7 +37,7 @@ namespace TypesNS
 
         private void InitTypes()
         {
-            string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Types.data");
+            string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Platformes.data");
             List<string> liste = new List<string>();
             StreamReader sr = null;
 
@@ -32,7 +45,7 @@ namespace TypesNS
             {
                 // Vérifier si le fichier existe
                 if (!File.Exists(chemin))
-                    throw new FileNotFoundException("Le fichier Types.data est introuvable.", chemin);
+                    throw new FileNotFoundException("Le fichier Platformes.data est introuvable.", chemin);
 
                 // Ouvrir le fichier en UTF-8
                 sr = new StreamReader(chemin, Encoding.UTF8, true);
@@ -42,9 +55,7 @@ namespace TypesNS
                 {
                     if (!string.IsNullOrWhiteSpace(ligne))
                         liste.Add(ligne.Trim()); // Ajouter au tableau
-                }
-
-                tPlateformes = liste.ToArray(); // Convertir en tableau
+                }                tPlateformes = liste.ToArray(); // Convertir en tableau
             }
             catch (FileNotFoundException)
             {
@@ -62,7 +73,7 @@ namespace TypesNS
 
         private void InitModeles()
         {
-            string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Modeles.data");
+            string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Genre.data");
             List<string> liste = new List<string>();
             StreamReader sr = null;
 
@@ -70,7 +81,7 @@ namespace TypesNS
             {
                 // Vérifier si le fichier existe
                 if (!File.Exists(chemin))
-                    throw new FileNotFoundException("Le fichier Modeles.data est introuvable.", chemin);
+                    throw new FileNotFoundException("Le fichier Genre.data est introuvable.", chemin);
 
                 // Ouvrir le fichier en UTF-8
                 sr = new StreamReader(chemin, Encoding.UTF8, true);

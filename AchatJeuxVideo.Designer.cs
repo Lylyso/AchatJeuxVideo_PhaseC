@@ -446,7 +446,9 @@
             this.Controls.Add(this.clientGroupBox);
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "AchatJeuxVideo";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Achat de Jeu Video";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AchatJeuxVideo_Load);
             this.clientGroupBox.ResumeLayout(false);
             this.clientGroupBox.PerformLayout();

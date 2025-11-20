@@ -55,9 +55,7 @@ namespace TypesNS
                 {
                     if (!string.IsNullOrWhiteSpace(ligne))
                         liste.Add(ligne.Trim()); // Ajouter au tableau
-                }
-
-                tPlateformes = liste.ToArray(); // Convertir en tableau
+                }                tPlateformes = liste.ToArray(); // Convertir en tableau
             }
             catch (FileNotFoundException)
             {

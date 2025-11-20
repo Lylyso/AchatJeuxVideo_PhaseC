@@ -109,7 +109,7 @@
             this.nomJeuLabel.Location = new System.Drawing.Point(25, 510);
             this.nomJeuLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.nomJeuLabel.Name = "nomJeuLabel";
-            this.nomJeuLabel.Size = new System.Drawing.Size(122, 25);
+            this.nomJeuLabel.Size = new System.Drawing.Size(119, 24);
             this.nomJeuLabel.TabIndex = 32;
             this.nomJeuLabel.Text = "Nom du jeu :";
             // 
@@ -164,7 +164,7 @@
             this.telephoneLabel.Location = new System.Drawing.Point(25, 424);
             this.telephoneLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.telephoneLabel.Name = "telephoneLabel";
-            this.telephoneLabel.Size = new System.Drawing.Size(117, 25);
+            this.telephoneLabel.Size = new System.Drawing.Size(113, 24);
             this.telephoneLabel.TabIndex = 4;
             this.telephoneLabel.Text = "Téléphone :";
             // 
@@ -174,7 +174,7 @@
             this.codePostalLabel.Location = new System.Drawing.Point(25, 344);
             this.codePostalLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.codePostalLabel.Name = "codePostalLabel";
-            this.codePostalLabel.Size = new System.Drawing.Size(135, 25);
+            this.codePostalLabel.Size = new System.Drawing.Size(126, 24);
             this.codePostalLabel.TabIndex = 3;
             this.codePostalLabel.Text = "Code Postal : ";
             // 
@@ -184,7 +184,7 @@
             this.adresseLabel.Location = new System.Drawing.Point(25, 254);
             this.adresseLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.adresseLabel.Name = "adresseLabel";
-            this.adresseLabel.Size = new System.Drawing.Size(96, 25);
+            this.adresseLabel.Size = new System.Drawing.Size(90, 24);
             this.adresseLabel.TabIndex = 2;
             this.adresseLabel.Text = "Adresse :";
             // 
@@ -194,7 +194,7 @@
             this.prenomLabel.Location = new System.Drawing.Point(23, 153);
             this.prenomLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.prenomLabel.Name = "prenomLabel";
-            this.prenomLabel.Size = new System.Drawing.Size(91, 25);
+            this.prenomLabel.Size = new System.Drawing.Size(87, 24);
             this.prenomLabel.TabIndex = 1;
             this.prenomLabel.Text = "Prénom :";
             // 
@@ -204,7 +204,7 @@
             this.nomLabel.Location = new System.Drawing.Point(25, 66);
             this.nomLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.nomLabel.Name = "nomLabel";
-            this.nomLabel.Size = new System.Drawing.Size(64, 25);
+            this.nomLabel.Size = new System.Drawing.Size(61, 24);
             this.nomLabel.TabIndex = 0;
             this.nomLabel.Text = "Nom :";
             // 
@@ -276,7 +276,7 @@
             this.dateLabel.Location = new System.Drawing.Point(26, 51);
             this.dateLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.dateLabel.Name = "dateLabel";
-            this.dateLabel.Size = new System.Drawing.Size(120, 25);
+            this.dateLabel.Size = new System.Drawing.Size(111, 24);
             this.dateLabel.TabIndex = 7;
             this.dateLabel.Text = "Date Achat :";
             // 
@@ -286,7 +286,7 @@
             this.platformeLabel.Location = new System.Drawing.Point(26, 123);
             this.platformeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.platformeLabel.Name = "platformeLabel";
-            this.platformeLabel.Size = new System.Drawing.Size(110, 25);
+            this.platformeLabel.Size = new System.Drawing.Size(103, 24);
             this.platformeLabel.TabIndex = 8;
             this.platformeLabel.Text = "Platforme : ";
             // 
@@ -296,7 +296,7 @@
             this.genreLabel.Location = new System.Drawing.Point(26, 201);
             this.genreLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.genreLabel.Name = "genreLabel";
-            this.genreLabel.Size = new System.Drawing.Size(77, 25);
+            this.genreLabel.Size = new System.Drawing.Size(73, 24);
             this.genreLabel.TabIndex = 9;
             this.genreLabel.Text = "Genre :";
             // 
@@ -306,7 +306,7 @@
             this.prixJeuxLabel.Location = new System.Drawing.Point(26, 272);
             this.prixJeuxLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.prixJeuxLabel.Name = "prixJeuxLabel";
-            this.prixJeuxLabel.Size = new System.Drawing.Size(56, 25);
+            this.prixJeuxLabel.Size = new System.Drawing.Size(52, 24);
             this.prixJeuxLabel.TabIndex = 10;
             this.prixJeuxLabel.Text = "Prix :";
             // 
@@ -331,7 +331,7 @@
             this.achatsLabel.Location = new System.Drawing.Point(144, 0);
             this.achatsLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.achatsLabel.Name = "achatsLabel";
-            this.achatsLabel.Size = new System.Drawing.Size(1321, 129);
+            this.achatsLabel.Size = new System.Drawing.Size(1133, 110);
             this.achatsLabel.TabIndex = 2;
             this.achatsLabel.Text = "Achats de Jeux Videos";
             // 
@@ -367,7 +367,7 @@
             this.jeuxVideosMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.jeuxVideosMenuStrip.Name = "jeuxVideosMenuStrip";
             this.jeuxVideosMenuStrip.Padding = new System.Windows.Forms.Padding(12, 4, 0, 4);
-            this.jeuxVideosMenuStrip.Size = new System.Drawing.Size(1771, 42);
+            this.jeuxVideosMenuStrip.Size = new System.Drawing.Size(1771, 37);
             this.jeuxVideosMenuStrip.TabIndex = 27;
             this.jeuxVideosMenuStrip.Text = "menuStrip1";
             // 
@@ -377,7 +377,7 @@
             this.enregistrerToolStripMenuItem,
             this.quitterToolStripMenuItem});
             this.fichierToolStripMenuItem.Name = "fichierToolStripMenuItem";
-            this.fichierToolStripMenuItem.Size = new System.Drawing.Size(91, 34);
+            this.fichierToolStripMenuItem.Size = new System.Drawing.Size(78, 29);
             this.fichierToolStripMenuItem.Text = "&Fichier";
             // 
             // enregistrerToolStripMenuItem
@@ -385,7 +385,7 @@
             this.enregistrerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("enregistrerToolStripMenuItem.Image")));
             this.enregistrerToolStripMenuItem.Name = "enregistrerToolStripMenuItem";
             this.enregistrerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
-            this.enregistrerToolStripMenuItem.Size = new System.Drawing.Size(321, 40);
+            this.enregistrerToolStripMenuItem.Size = new System.Drawing.Size(277, 34);
             this.enregistrerToolStripMenuItem.Text = "&Enregistrer";
             this.enregistrerToolStripMenuItem.Click += new System.EventHandler(this.EnregistrerButton_Click);
             // 
@@ -394,7 +394,7 @@
             this.quitterToolStripMenuItem.Name = "quitterToolStripMenuItem";
             this.quitterToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.Q)));
-            this.quitterToolStripMenuItem.Size = new System.Drawing.Size(321, 40);
+            this.quitterToolStripMenuItem.Size = new System.Drawing.Size(277, 34);
             this.quitterToolStripMenuItem.Text = "&Quitter";
             this.quitterToolStripMenuItem.Click += new System.EventHandler(this.QuitterToolStripMenuItem_Click);
             // 
@@ -403,14 +403,14 @@
             this.aideToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aproposDeToolStripMenuItem});
             this.aideToolStripMenuItem.Name = "aideToolStripMenuItem";
-            this.aideToolStripMenuItem.Size = new System.Drawing.Size(73, 34);
+            this.aideToolStripMenuItem.Size = new System.Drawing.Size(64, 29);
             this.aideToolStripMenuItem.Text = "&Aide";
             // 
             // aproposDeToolStripMenuItem
             // 
             this.aproposDeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aproposDeToolStripMenuItem.Image")));
             this.aproposDeToolStripMenuItem.Name = "aproposDeToolStripMenuItem";
-            this.aproposDeToolStripMenuItem.Size = new System.Drawing.Size(259, 40);
+            this.aproposDeToolStripMenuItem.Size = new System.Drawing.Size(226, 34);
             this.aproposDeToolStripMenuItem.Text = "À &propos de...";
             this.aproposDeToolStripMenuItem.Click += new System.EventHandler(this.AproposDeToolStripMenuItem_Click);
             // 
@@ -448,7 +448,9 @@
             this.Controls.Add(this.clientGroupBox);
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "AchatJeuxVideo";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Achat de Jeu Video";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.AchatJeuxVideo_Load);
             this.clientGroupBox.ResumeLayout(false);
             this.clientGroupBox.PerformLayout();

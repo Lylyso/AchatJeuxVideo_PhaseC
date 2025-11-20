@@ -1,8 +1,20 @@
-﻿using System;
+﻿
+/*     Programmeur :   Lydianne , Labib, Mohamed
+*      Date :          17 Octobre 2025
+*   
+*      Solution:       AchatJeuxVideo.sln
+*      Projet:         AchatJeuxVideo.csproj
+*      Classe:         AchatJeuxVideo.cs
+*
+*      But:            Calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
+* 
+*      Info:           Phase H
+*/
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TypesNS
 {
@@ -15,17 +27,86 @@ namespace TypesNS
         }
 
         private string[] tPlateformes;
-        private string[] tGenres;
+        private string[] tGenres ;
 
         public Types()
         {
-            InitTableaux();
+            InitTypes();
+            InitModeles();
         }
 
-        private void InitTableaux()
+        private void InitTypes()
         {
-            tPlateformes = new string[] { "Xbox", "PlayStation", "Nintendo Switch", "PC" };
-            tGenres = new string[] { "Action", "Sport", "Aventure" };
+            string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Platformes.data");
+            List<string> liste = new List<string>();
+            StreamReader sr = null;
+
+            try
+            {
+                // Vérifier si le fichier existe
+                if (!File.Exists(chemin))
+                    throw new FileNotFoundException("Le fichier Platformes.data est introuvable.", chemin);
+
+                // Ouvrir le fichier en UTF-8
+                sr = new StreamReader(chemin, Encoding.UTF8, true);
+
+                string ligne;
+                while ((ligne = sr.ReadLine()) != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(ligne))
+                        liste.Add(ligne.Trim()); // Ajouter au tableau
+                }                tPlateformes = liste.ToArray(); // Convertir en tableau
+            }
+            catch (FileNotFoundException)
+            {
+                throw; // relancer l'exception obligatoirement
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erreur lors de l'initialisation des plateformes : " + ex.Message);
+            }
+            finally
+            {
+                sr?.Close();
+            }
+        }
+
+        private void InitModeles()
+        {
+            string chemin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Genre.data");
+            List<string> liste = new List<string>();
+            StreamReader sr = null;
+
+            try
+            {
+                // Vérifier si le fichier existe
+                if (!File.Exists(chemin))
+                    throw new FileNotFoundException("Le fichier Genre.data est introuvable.", chemin);
+
+                // Ouvrir le fichier en UTF-8
+                sr = new StreamReader(chemin, Encoding.UTF8, true);
+
+                string ligne;
+                while ((ligne = sr.ReadLine()) != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(ligne))
+                        liste.Add(ligne.Trim()); // Ajouter au tableau
+                }
+
+                tGenres = liste.ToArray(); // Convertir en tableau
+            }
+            catch (FileNotFoundException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erreur lors de l'initialisation des genres : " + ex.Message);
+            }
+            finally
+            {
+                sr?.Close();
+            }
         }
 
         public string[] GetTypes(CodeTypes type)

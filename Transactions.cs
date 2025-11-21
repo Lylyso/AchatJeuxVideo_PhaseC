@@ -1,24 +1,15 @@
-﻿
-/*     Programmeur :   Lydianne , Labib, Mohamed
-*      Date :          17 Octobre 2025
-*   
-*      Solution:       AchatJeuxVideo.sln
-*      Projet:         AchatJeuxVideo.csproj
-*      Classe:         AchatJeuxVideo.cs
+﻿/*     Programmeur :   Lydianne , Labib, Mohamed
+*      Date :          21 Octobre 2025
+*      Phase I
 *
-*      But:            Calculer le prix d'achat d'un jeu vidéo en fonction de la plateforme et du genre.
-* 
-*      Info:           Phase H
+*      But: Enregistrer une transaction d’achat selon la plateforme et le genre.
 */
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace TransactionsNS
 {
@@ -36,6 +27,15 @@ namespace TransactionsNS
         private static CultureInfo CultureEnCA = CultureInfo.GetCultureInfo("en-CA");
         // Les prix dans les fichiers sont en format US (point décimal)
         private static CultureInfo CultureEnUS = CultureInfo.GetCultureInfo("en-US");
+
+        //----Mohamed-----
+
+        // Délimiteur utilisé quand on écrit la transaction dans le fichier texte
+        public const char DELIMITEUR = ';';
+
+        // Propriété statique si la couche présentation veut formatter avec la même culture
+        public static CultureInfo CulturePrix => CultureEnCA;
+        //----------------
 
         // Expressions régulières pour valider code postal et téléphone
         private const string REGEX_CODE_POSTAL = @"^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$";
@@ -56,6 +56,8 @@ namespace TransactionsNS
         private DateTime datePaiement;
         private string codePostal;
         private string telephone;
+
+
 
         // Codes d’erreurs internes
         private enum CodesErreurs
@@ -248,6 +250,87 @@ namespace TransactionsNS
         }
         #endregion
 
+        #region Validation transaction
+
+        /// <summary>
+        /// Vérifie si toutes les données obligatoires de la transaction
+        /// sont présentes et valides.
+        /// Ne lance pas d’exception : retourne true/false
+        /// et met un message d’erreur dans messageErreur.
+        /// </summary>
+        public bool TransactionCompletee(out string messageErreur)
+        {
+            // Nom client
+            if (string.IsNullOrWhiteSpace(nomClient))
+            {
+                messageErreur = tMessagesErreurs[(int)CodesErreurs.NomObligatoire];
+                return false;
+            }
+
+            // Nom du jeu (on réutilise le message "Prénom" de ton enum)
+            if (string.IsNullOrWhiteSpace(nomJeu))
+            {
+                messageErreur = tMessagesErreurs[(int)CodesErreurs.PrenomObligatoire];
+                return false;
+            }
+
+            // Plateforme
+            if (string.IsNullOrWhiteSpace(platforme))
+            {
+                messageErreur = tMessagesErreurs[(int)CodesErreurs.PlateformeObligatoire];
+                return false;
+            }
+
+            // Genre
+            if (string.IsNullOrWhiteSpace(genre))
+            {
+                messageErreur = tMessagesErreurs[(int)CodesErreurs.GenreObligatoire];
+                return false;
+            }
+
+            // Quantité
+            if (quantite <= 0)
+            {
+                messageErreur = "La quantité doit être supérieure à 0.";
+                return false;
+            }
+
+            // Prix
+            if (prix <= 0)
+            {
+                messageErreur = tMessagesErreurs[(int)CodesErreurs.PrixInvalide];
+                return false;
+            }
+
+            // Date d’achat
+            if (dateTransaction == default(DateTime))
+            {
+                messageErreur = tMessagesErreurs[(int)CodesErreurs.DateTransactionObligatoire];
+                return false;
+            }
+
+            // Code postal
+            if (string.IsNullOrWhiteSpace(codePostal))
+            {
+                messageErreur = "Le code postal est obligatoire.";
+                return false;
+            }
+
+            // Téléphone
+            if (string.IsNullOrWhiteSpace(telephone))
+            {
+                messageErreur = "Le téléphone est obligatoire.";
+                return false;
+            }
+
+            // Si tout est OK
+            messageErreur = string.Empty;
+            return true;
+        }
+
+
+        #endregion
+
         #region Propriétés avec validations 
         public int Id => id;
 
@@ -415,27 +498,69 @@ namespace TransactionsNS
         #region Méthodes principales
         public void Enregistrer()
         {
-            CompteurTransactions++;
-            id = CompteurTransactions;
+            //Verifier si la transaction est complète
+            if (!TransactionCompletee(out string messageErreur))
+            {
+                throw new Exception("Transaction incomplète : " + messageErreur);
+            }
 
-            Console.WriteLine("Transaction enregistrée :");
-            Console.WriteLine($"ID: {Id}, Client: {NomClient}, Produit: {NomJeu}");
-            Console.WriteLine($"Plateforme: {Platforme}, Genre: {Genre}");
-            Console.WriteLine($"Quantité: {Quantite}, Prix: {Prix:C}, Total: {Total:C}");
-            Console.WriteLine($"Code Postal: {CodePostal}, Téléphone: {Telephone}");
-            Console.WriteLine($"Date: {DateTransaction:d}, Paiement dû: {DatePaiement:d}");
+            //Générer un ID unique basé sur DateTime.Now.Ticks
+            id = (int)(DateTime.Now.Ticks % int.MaxValue);
+
+            try
+            {
+                //Chemin vers Data\Transactions.data
+                string dossier = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
+                string fichier = Path.Combine(dossier, "Transactions.data");
+
+                if (!Directory.Exists(dossier))
+                    Directory.CreateDirectory(dossier);
+
+                //Construire la ligne texte selon l’ordre des champs
+                string ligne =
+                    id + DELIMITEUR.ToString() +
+                    nomClient + DELIMITEUR +
+                    nomJeu + DELIMITEUR +
+                    platforme + DELIMITEUR +
+                    genre + DELIMITEUR +
+                    quantite + DELIMITEUR +
+                    prix.ToString("F2", CulturePrix) + DELIMITEUR +
+                    total.ToString("F2", CulturePrix) + DELIMITEUR +
+                    codePostal + DELIMITEUR +
+                    telephone + DELIMITEUR +
+                    dateTransaction.ToString("yyyy-MM-dd") + DELIMITEUR +
+                    datePaiement.ToString("yyyy-MM-dd");
+
+                //ecriture dans le fichier en mode append
+                using (StreamWriter sw = new StreamWriter(fichier, true, Encoding.UTF8))
+                {
+                    sw.WriteLine(ligne);
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw new Exception("Accès refusé : impossible d’écrire dans le fichier Transactions.data.");
+            }
+            catch (IOException ex)
+            {
+                throw new Exception("Erreur disque lors de l’écriture de la transaction : " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erreur inattendue lors de l’enregistrement : " + ex.Message);
+            }
         }
 
         public void Enregistrer(string nomClient, string nomJeu, string platforme, string genre, int quantite, DateTime dateTransaction)
         {
-            this.NomClient = nomClient;
-            this.NomJeu = nomJeu;
-            this.Platforme = platforme;
-            this.Genre = genre;
-            this.Quantite = quantite;
-            this.DateTransaction = dateTransaction;
-            this.Prix = GetPrix(platforme, genre);
-            this.Total = this.Prix * this.Quantite;
+            NomClient = nomClient;
+            NomJeu = nomJeu;
+            Platforme = platforme;
+            Genre = genre;
+            Quantite = quantite;
+            DateTransaction = dateTransaction;
+            Prix = GetPrix(platforme, genre);
+            Total = Prix * Quantite;
             Enregistrer();
         }
         #endregion
@@ -444,25 +569,25 @@ namespace TransactionsNS
         public string[] GetPlatforme() => tPlatforme;
         public string[] GetGenre() => tGenre;
 
-        public decimal GetPrix(int platforme, int genre)
+        public decimal GetPrix(int platformeIndex, int genreIndex)
         {
-            if (platforme < 0 || platforme >= tPlatforme.Length)
-                throw new ArgumentOutOfRangeException(nameof(platforme), "Indice de plateforme hors limites!");
-            if (genre < 0 || genre >= tGenre.Length)
-                throw new ArgumentOutOfRangeException(nameof(genre), "Indice de genre hors limites!");
-            return tPrix[platforme, genre];
+            if (platformeIndex < 0 || platformeIndex >= tPlatforme.Length)
+                throw new ArgumentOutOfRangeException(nameof(platformeIndex), "Indice de plateforme hors limites!");
+            if (genreIndex < 0 || genreIndex >= tGenre.Length)
+                throw new ArgumentOutOfRangeException(nameof(genreIndex), "Indice de genre hors limites!");
+            return tPrix[platformeIndex, genreIndex];
         }
 
-        public decimal GetPrix(string platforme, string genre)
+        public decimal GetPrix(string plateforme, string genreStr)
         {
-            int posPlatforme = Array.IndexOf(tPlatforme, platforme);
-            int posGenre = Array.IndexOf(tGenre, genre);
-            if (posPlatforme < 0)
-                throw new ArgumentException("Marque inconnue!", nameof(platforme));
-            if (posGenre < 0)
-                throw new ArgumentException("Genre inconnu!", nameof(genre));
+            int posPlatforme = Array.IndexOf(tPlatforme, plateforme);
+            int posGenre = Array.IndexOf(tGenre, genreStr);
+            if (posPlatforme < 0) throw new ArgumentException("Plateforme inconnue!", nameof(plateforme));
+            if (posGenre < 0) throw new ArgumentException("Genre inconnu!", nameof(genreStr));
             return tPrix[posPlatforme, posGenre];
         }
+
+        private static string Sanit(string s) => string.IsNullOrEmpty(s) ? "" : s.Replace(";", " ").Trim();
         #endregion
     }
 }
